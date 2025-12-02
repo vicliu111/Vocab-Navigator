@@ -177,30 +177,23 @@
         }
 
         /* 表格樣式 */
-        #explanation-table, #my-vocab-table {
+        #explanation-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
 
-        #explanation-table th, #explanation-table td, 
-        #my-vocab-table th, #my-vocab-table td {
+        #explanation-table th, #explanation-table td {
             border: 1px solid #ddd;
             padding: 10px;
             text-align: left;
         }
 
-        #explanation-table th, #my-vocab-table th {
+        #explanation-table th {
             background-color: #bbdefb;
             color: #1a237e;
         }
 
-        #clear-my-vocab-btn {
-            background-color: #f44336;
-        }
-        #clear-my-vocab-btn:hover {
-            background-color: #d32f2f;
-        }
         /* ========================================================= */
     </style>
 </head>
@@ -220,7 +213,7 @@
         <div class="page-area home-area" id="home-area">
             <h2 id="welcome-message">歡迎回來！</h2>
             <button onclick="startQuiz()">開始字彙測驗 (無限出題)</button>
-            <button onclick="changePage('my-vocab-area')">查看我的單字表</button>
+            <button onclick="openVocabPage()">查看我的單字表 (新分頁)</button>
             <button onclick="logout()" style="background-color: #888; margin-top: 30px;">🚪 登出</button>
         </div>
 
@@ -269,39 +262,19 @@
                 </div>
             </div>
         </div>
-
-        <div class="page-area" id="my-vocab-area">
-            <button onclick="changePage('home-area')" style="background-color: #555; width: auto; padding: 10px 15px; margin-bottom: 15px;">⬅️ 返回首頁</button>
-
-            <h2>⭐ 我的單字表 <span id="my-vocab-count"></span></h2>
-            <p style="text-align: center; color: #777;">點擊測驗中的 <span style="font-size: 1.2em;">⭐</span> 圖示即可收藏單字。</p>
-            <table id="my-vocab-table">
-                <thead>
-                    <tr>
-                        <th>單字 (Word)</th>
-                        <th>詞性 (Part)</th>
-                        <th>翻譯 (Translation)</th>
-                        <th>英文解釋 (Definition)</th>
-                    </tr>
-                </thead>
-                <tbody id="my-vocab-body">
-                    </tbody>
-            </table>
-            <button id="clear-my-vocab-btn" onclick="clearMyVocab()">清除所有收藏單字</button>
+        
         </div>
-    </div>
 
     <script>
-        /* ==================== JavaScript 邏輯區塊 ==================== */
+        /* ==================== JavaScript 核心邏輯區塊 ==================== */
         const WRONG_WORDS_KEY = 'quizWrongWords'; 
         const MY_WORDS_KEY = 'myVocabWords';      
         
         let currentUsername = null; 
-        let questionCount = 0; // 新增：用於無限出題模式的題號計數
+        let questionCount = 0; 
         let currentQuestion = null;
 
         // --- 模擬題庫 (用於模擬 AI 出題) ---
-        // 當未來連接真正的 AI 時，可刪除此變數
         const quizData = [
             { 
                 question: "The company's new policy states that all employees must maintain a high level of professional ______ in the workplace.", 
@@ -348,9 +321,7 @@
             });
             document.getElementById(pageId).style.display = 'block';
             
-            if (pageId === 'my-vocab-area') {
-                showMyVocab();
-            } else if (pageId === 'home-area' && currentUsername) {
+            if (pageId === 'home-area' && currentUsername) {
                 document.getElementById('welcome-message').textContent = `歡迎回來，${currentUsername}！`;
             }
         }
@@ -386,6 +357,17 @@
             }
         }
 
+        // --- 獨立分頁邏輯 (新增) ---
+        function openVocabPage() {
+            if (!currentUsername) {
+                alert('請先登入才能查看您的單字表！');
+                return;
+            }
+            // 開啟新分頁，並將用戶名作為 URL 參數傳遞
+            window.open(`vocab.html?user=${currentUsername}`, '_blank');
+        }
+
+
         // --- 儲存 Key 產生器 (確保多帳號紀錄) ---
         function _getStorageKey(baseKey) {
             if (!currentUsername) {
@@ -395,10 +377,8 @@
             return `${baseKey}_${currentUsername.toLowerCase()}`;
         }
 
-        // --- 單字收藏/錯題本邏輯 (略) ---
-        // (此處省略，但功能已包含在您的代碼中，且已更新使用 _getStorageKey)
-        // 為了保持程式碼簡潔，這裡只列出主要入口
-        function getMyVocab() { /* ... */ 
+        // --- 單字收藏/錯題本邏輯 (保留必須的函數) ---
+        function getMyVocab() { 
             const key = _getStorageKey(MY_WORDS_KEY);
             if (!key) return [];
             const storedData = localStorage.getItem(key);
@@ -423,45 +403,10 @@
                 alert(`「${wordKey}」已從單字表中移除！`);
             }
             localStorage.setItem(key, JSON.stringify(myVocab));
-            if (document.getElementById('my-vocab-area').style.display === 'block') { showMyVocab(); }
+            // 不需要再呼叫 showMyVocab，因為單字表在獨立分頁中
         }
 
-        function clearMyVocab() {
-            const key = _getStorageKey(MY_WORDS_KEY);
-            if (!key) return;
-            if (confirm(`確定要清除用戶 ${currentUsername} 的所有收藏單字嗎？`)) {
-                localStorage.removeItem(key);
-                alert('收藏單字紀錄已清除！');
-                showMyVocab(); 
-            }
-        }
-
-        function showMyVocab() {
-            const myVocab = getMyVocab();
-            const reviewBody = document.getElementById('my-vocab-body');
-            reviewBody.innerHTML = '';
-            
-            if (myVocab.length === 0) {
-                reviewBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 15px;">您的單字表是空的。快去收藏您想記住的單字吧！</td></tr>';
-                document.getElementById('clear-my-vocab-btn').style.display = 'none';
-                document.getElementById('my-vocab-count').textContent = '（共 0 個單字）';
-            } else {
-                document.getElementById('my-vocab-count').textContent = `（共 ${myVocab.length} 個單字）`;
-                document.getElementById('clear-my-vocab-btn').style.display = 'block';
-                myVocab.forEach(item => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${item.word}</td>
-                        <td>${item.part}</td>
-                        <td>${item.trans}</td>
-                        <td>${item.def}</td>
-                    `;
-                    reviewBody.appendChild(row);
-                });
-            }
-        }
-
-        function getWrongWords() { /* ... */ 
+        function getWrongWords() { 
             const key = _getStorageKey(WRONG_WORDS_KEY);
             if (!key) return [];
             const storedData = localStorage.getItem(key);
@@ -480,54 +425,32 @@
             }
         }
 
-        // --- 核心變動：AI 載入邏輯 ---
+        // --- AI 載入邏輯 ---
 
-        /**
-         * 🚨 模擬從 AI/後端服務獲取新題目
-         * * 💡 未來升級建議：將此函數的內容替換為實際的 `fetch` 請求，指向您的 AI 服務端點。
-         * * @returns {Promise<Object>} 一個 Promise，解析後得到一個新的題目對象。
-         */
         async function getNewQuestionFromAI() {
-            // 模擬網絡延遲 (AI 思考時間)
             await new Promise(resolve => setTimeout(resolve, 500)); 
-            
-            // 模擬從題庫中隨機選取一題 (無限重複使用)
             const randomIndex = Math.floor(Math.random() * quizData.length);
             return quizData[randomIndex];
-            
-            /* // 💡 真實 AI 範例：
-            const response = await fetch('YOUR_AI_SERVICE_URL/generate_quiz', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ level: 'GEPT Intermediate', count: 1 })
-            });
-            if (!response.ok) throw new Error('AI service failed to generate question.');
-            return response.json(); 
-            */
         }
 
         function startQuiz() {
-            questionCount = 0; // 開始新的無限測驗，題號歸零
+            questionCount = 0; 
             changePage('quiz-area');
             loadQuestion();
         }
         
         function endQuiz() {
-            // 結束無限測驗並返回首頁
             changePage('home-area');
         }
 
         async function loadQuestion() {
-            // 1. 顯示載入狀態
             document.getElementById('loading-message').style.display = 'block';
             document.getElementById('quiz-content').style.display = 'none';
 
             try {
-                // 2. 獲取新題目 (模擬 AI 生成)
                 currentQuestion = await getNewQuestionFromAI();
                 questionCount++;
                 
-                // 3. 更新介面
                 document.getElementById('question-number').textContent = `Question ${questionCount}`;
                 document.getElementById('question-text').textContent = currentQuestion.question;
                 
@@ -573,7 +496,6 @@
                     optionsContainer.appendChild(optionItem);
                 });
 
-                // 4. 隱藏載入狀態，顯示內容
                 document.getElementById('explanation-area').style.display = 'none';
                 document.getElementById('feedback').textContent = '';
                 document.getElementById('submit-btn').disabled = false;
@@ -582,7 +504,6 @@
                 document.getElementById('quiz-content').style.display = 'block';
 
             } catch (error) {
-                // 錯誤處理，例如 AI 服務器無響應
                 document.getElementById('question-text').textContent = `載入題目失敗：${error.message}。請檢查網路或稍後再試。`;
                 document.getElementById('options-container').innerHTML = '';
                 document.getElementById('submit-btn').disabled = true;
@@ -636,11 +557,9 @@
         }
 
         function showExplanation() {
-            // 顯示題目解釋
             document.getElementById('translation-text').textContent = currentQuestion.questionTrans || '無翻譯提供。';
             document.getElementById('grammar-text').textContent = currentQuestion.questionGrammar || '無語法分析提供。';
 
-            // 顯示選項單字詳解
             const explanationBody = document.getElementById('explanation-body');
             explanationBody.innerHTML = ''; 
             
@@ -664,7 +583,6 @@
         }
 
         function nextQuestion() {
-            // 在無限出題模式下，直接載入下一題
             loadQuestion();
         }
 
