@@ -15,7 +15,7 @@
             padding: 20px;
         }
 
-        .container {
+        .main-wrapper {
             background-color: #ffffff;
             padding: 30px;
             border-radius: 12px;
@@ -23,50 +23,6 @@
             max-width: 800px;
             width: 100%;
         }
-        
-        /* ------------------ 登入畫面樣式 ------------------ */
-        .login-container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-            margin-top: 100px;
-            text-align: center;
-        }
-
-        .login-container h2 {
-            color: #1e88e5;
-            margin-bottom: 25px;
-        }
-
-        .login-container input {
-            width: calc(100% - 20px);
-            padding: 12px 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
-
-        .login-container button {
-            background-color: #0d47a1;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1.1em;
-            transition: background-color 0.3s;
-        }
-
-        .login-container button:hover {
-            background-color: #0c397e;
-        }
-        /* ---------------------------------------------------- */
 
         h1 {
             text-align: center;
@@ -75,6 +31,45 @@
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
         }
+
+        /* ------------------ 頁面切換、登入和首頁樣式 ------------------ */
+        .page-area {
+            display: none; /* 所有頁面預設隱藏 */
+            padding-top: 20px;
+        }
+
+        .login-container, .home-area {
+            max-width: 400px;
+            margin: 100px auto 0;
+            text-align: center;
+        }
+
+        .home-area button, .login-container button, #clear-my-vocab-btn {
+            background-color: #0d47a1;
+            color: white;
+            padding: 15px 30px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+
+        .home-area button:hover, .login-container button:hover {
+            background-color: #0c397e;
+        }
+        
+        .login-container input {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        /* ---------------------------------------------------- */
 
         .question-text {
             font-size: 1.15em;
@@ -101,31 +96,26 @@
             align-items: center;
             flex-grow: 1;
             cursor: pointer;
-            transition: background-color 0.2s;
         }
         
-        /* 單字收藏按鈕 */
         .favorite-btn {
             cursor: pointer;
             font-size: 1.5em;
             color: #ccc;
             margin-left: 10px;
             transition: color 0.2s;
-            line-height: 1; /* 避免佔用多餘空間 */
+            line-height: 1;
         }
 
         .favorite-btn.collected {
-            color: gold; /* 收藏後變金色 */
-        }
-
-        .option-label:hover {
-            background-color: #e0e0e0;
+            color: gold;
         }
 
         input[type="radio"] {
             margin-right: 10px;
         }
 
+        /* 提交和下一題按鈕 */
         #submit-btn, .explanation-area button {
             display: block;
             width: 100%;
@@ -139,9 +129,12 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
-        #submit-btn:hover, .explanation-area button:hover {
-            background-color: #43a047;
+        
+        #loading-message {
+            text-align: center;
+            font-size: 1.2em;
+            color: #1e88e5;
+            padding: 30px;
         }
 
         .feedback {
@@ -162,43 +155,50 @@
             color: #d32f2f;
         }
 
-        /* 詳解、錯題本、單字表區域通用樣式 */
-        .explanation-area, .review-area, .my-vocab-area {
+        /* 詳解區域 */
+        .explanation-area {
             margin-top: 30px;
             padding-top: 20px;
             border-top: 2px dashed #ccc;
         }
-
-        .explanation-area h3, .review-area h3, .my-vocab-area h3 {
-            color: #0d47a1;
-            text-align: center;
-            margin-bottom: 15px;
+        
+        .explanation-details {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px dashed #bdbdbd;
+            border-radius: 6px;
+            background-color: #f9f9f9;
         }
 
-        #explanation-table, #review-table, #my-vocab-table {
+        .explanation-details h4 {
+            color: #0d47a1;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        /* 表格樣式 */
+        #explanation-table, #my-vocab-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
 
         #explanation-table th, #explanation-table td, 
-        #review-table th, #review-table td,
         #my-vocab-table th, #my-vocab-table td {
             border: 1px solid #ddd;
             padding: 10px;
             text-align: left;
         }
 
-        #explanation-table th, #review-table th, #my-vocab-table th {
+        #explanation-table th, #my-vocab-table th {
             background-color: #bbdefb;
             color: #1a237e;
         }
 
-        #clear-btn, #clear-my-vocab-btn {
+        #clear-my-vocab-btn {
             background-color: #f44336;
-            margin-bottom: 0; /* 讓按鈕緊貼表格 */
         }
-        #clear-btn:hover, #clear-my-vocab-btn:hover {
+        #clear-my-vocab-btn:hover {
             background-color: #d32f2f;
         }
         /* ========================================================= */
@@ -206,67 +206,75 @@
 </head>
 <body>
     
-    <div class="login-container" id="login-container">
-        <h2>用戶登入</h2>
-        <input type="text" id="username" placeholder="用戶名 (User)">
-        <input type="password" id="password" placeholder="密碼 (Password)">
-        <button onclick="simulateLogin()">登入</button>
-        <p id="login-message" style="color: red; margin-top: 10px;"></p>
-    </div>
+    <div class="main-wrapper">
+        <h1 id="main-title">📚 英單領航者</h1>
 
-    <div class="container" id="quiz-container" style="display: none;">
-        
-        <h1>📚 英單領航者：學測 A.I. 測驗</h1>
-        
-        <div id="quiz-area">
-            <h2 id="question-number">Question 1 / 5</h2>
-            <p id="question-text" class="question-text"></p>
+        <div class="page-area login-container" id="login-area">
+            <h2>用戶登入</h2>
+            <input type="text" id="username" placeholder="用戶名 (User)">
+            <input type="password" id="password" placeholder="密碼 (Password)">
+            <button onclick="simulateLogin()">登入</button>
+            <p id="login-message" style="color: red; margin-top: 10px;"></p>
+        </div>
+
+        <div class="page-area home-area" id="home-area">
+            <h2 id="welcome-message">歡迎回來！</h2>
+            <button onclick="startQuiz()">開始字彙測驗 (無限出題)</button>
+            <button onclick="changePage('my-vocab-area')">查看我的單字表</button>
+            <button onclick="logout()" style="background-color: #888; margin-top: 30px;">🚪 登出</button>
+        </div>
+
+        <div class="page-area" id="quiz-area">
+            <button onclick="endQuiz()" style="background-color: #555; width: auto; padding: 10px 15px; margin-bottom: 15px;">⬅️ 結束測驗，返回首頁</button>
+
+            <h2 id="question-number">Question N</h2>
             
-            <div id="options-container" class="options-container">
+            <p id="loading-message" style="display:none;">
+                🤖 AI 正在生成題目中... 請稍候...
+            </p>
+
+            <div id="quiz-content">
+                <p id="question-text" class="question-text"></p>
+                
+                <div id="options-container" class="options-container">
+                    </div>
+                
+                <button id="submit-btn" onclick="checkAnswer()">確認作答</button>
+                
+                <div id="feedback" class="feedback"></div>
+            
+                <div id="explanation-area" class="explanation-area" style="display: none;">
+                    
+                    <div class="explanation-details">
+                        <h4>中文翻譯</h4>
+                        <p id="translation-text"></p>
+                        <h4>句子結構與語法</h4>
+                        <p id="grammar-text"></p>
+                    </div>
+
+                    <h3>💡 選項單字詳解</h3>
+                    <table id="explanation-table">
+                        <thead>
+                            <tr>
+                                <th>單字 (Word)</th>
+                                <th>詞性 (Part)</th>
+                                <th>翻譯 (Translation)</th>
+                                <th>英文解釋 (Definition)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="explanation-body">
+                            </tbody>
+                    </table>
+                    <button id="next-btn" onclick="nextQuestion()">下一題</button>
                 </div>
-            
-            <button id="submit-btn" onclick="checkAnswer()">確認作答</button>
-            
-            <div id="feedback" class="feedback"></div>
-        </div>
-        
-        <div id="explanation-area" class="explanation-area" style="display: none;">
-            <h3>💡 單字解釋與詳解</h3>
-            <table id="explanation-table">
-                <thead>
-                    <tr>
-                        <th>單字 (Word)</th>
-                        <th>詞性 (Part)</th>
-                        <th>翻譯 (Translation)</th>
-                        <th>英文解釋 (Definition)</th>
-                    </tr>
-                </thead>
-                <tbody id="explanation-body">
-                    </tbody>
-            </table>
-            <button onclick="nextQuestion()">下一題</button>
+            </div>
         </div>
 
-        <div id="review-area" class="review-area" style="display: none;">
-            <h3>🔥 您的錯題本 <span id="review-count"></span></h3>
-            <table id="review-table">
-                <thead>
-                    <tr>
-                        <th>單字 (Word)</th>
-                        <th>詞性 (Part)</th>
-                        <th>翻譯 (Translation)</th>
-                        <th>英文解釋 (Definition)</th>
-                    </tr>
-                </thead>
-                <tbody id="review-body">
-                    </tbody>
-            </table>
-            <button id="clear-btn" onclick="clearWrongWords()">清除錯題紀錄</button>
-        </div>
+        <div class="page-area" id="my-vocab-area">
+            <button onclick="changePage('home-area')" style="background-color: #555; width: auto; padding: 10px 15px; margin-bottom: 15px;">⬅️ 返回首頁</button>
 
-        <div id="my-vocab-area" class="my-vocab-area">
-            <h3>⭐ 我的單字表 <span id="my-vocab-count"></span></h3>
-            <p style="text-align: center; color: #777;">點擊上方的 <span style="font-size: 1.2em;">⭐</span> 圖示即可收藏單字</p>
+            <h2>⭐ 我的單字表 <span id="my-vocab-count"></span></h2>
+            <p style="text-align: center; color: #777;">點擊測驗中的 <span style="font-size: 1.2em;">⭐</span> 圖示即可收藏單字。</p>
             <table id="my-vocab-table">
                 <thead>
                     <tr>
@@ -279,137 +287,209 @@
                 <tbody id="my-vocab-body">
                     </tbody>
             </table>
-            <button id="clear-my-vocab-btn" onclick="clearMyVocab()">清除收藏單字</button>
+            <button id="clear-my-vocab-btn" onclick="clearMyVocab()">清除所有收藏單字</button>
         </div>
     </div>
 
     <script>
         /* ==================== JavaScript 邏輯區塊 ==================== */
-        const WRONG_WORDS_KEY = 'quizWrongWords'; // 錯題本本地儲存 Key
-        const MY_WORDS_KEY = 'myVocabWords';      // 我的單字表本地儲存 Key
-        const QUIZ_LENGTH = 5; // 每次測驗的題目數量
+        const WRONG_WORDS_KEY = 'quizWrongWords'; 
+        const MY_WORDS_KEY = 'myVocabWords';      
         
-        // 題庫 (已擴充，方便隨機抽樣)
-        const quizData = [
-            { question: "The company's new policy states that all employees must maintain a high level of professional ______ in the workplace.", answerKey: "C", options: [
-                { key: "A", word: "texture", part: "n.", trans: "質地、手感", def: "The feel or appearance of a surface or a substance." },
-                { key: "B", word: "devotion", part: "n.", trans: "奉獻、忠誠", def: "Profound dedication or loyalty." },
-                { key: "C", "word": "decorum", part: "n.", trans: "禮節、端莊", def: "Behavior in keeping with good taste and propriety; etiquette." },
-                { key: "D", "word": "friction", part: "n.", trans: "摩擦、衝突", def: "The resistance that one surface or object encounters when moving over another; conflict or antagonism." }
-            ]},
-            { question: "The famous scientist was given a special ______ from the government for his groundbreaking research in sustainable energy.", answerKey: "B", options: [
-                { key: "A", word: "menace", part: "n.", trans: "威脅、危險的人/物", def: "A person or thing that is likely to cause harm; a threat or danger." },
-                { key: "B", word: "subsidy", part: "n.", trans: "補助金、津貼", def: "A sum of money granted by the government or a public body to assist an industry or business." },
-                { key: "C", word: "obstacle", part: "n.", trans: "障礙、阻礙", def: "A thing that blocks one's way or prevents or hinders progress." },
-                { key: "D", word: "consensus", part: "n.", trans: "共識、一致的意見", def: "General agreement." }
-            ]},
-            { question: "She found her supervisor's constant criticism to be a ______ source of stress that negatively affected her performance.", answerKey: "C", options: [
-                { key: "A", word: "spontaneous", part: "adj.", trans: "自發的", def: "Performed or occurring as a result of a sudden inner impulse." },
-                { key: "B", word: "clandestine", part: "adj.", trans: "祕密的", def: "Kept secret or done secretively, especially because illicit." },
-                { key: "C", "word": "perpetual", part: "adj.", trans: "永久的、持續不斷的", def: "Never ending or changing; occurring repeatedly." },
-                { key: "D", "word": "tentative", part: "adj.", trans: "暫時性的、不確定的", def: "Not certain or fixed; provisional." }
-            ]},
-             { question: "The government issued a severe ______ against the consumption of alcohol in public parks.", answerKey: "D", options: [
-                { key: "A", word: "fusion", part: "n.", trans: "融合", def: "The process or result of joining two or more things together to form a single entity." },
-                { key: "B", word: "catalyst", part: "n.", trans: "催化劑", def: "A substance that increases the rate of a chemical reaction without itself undergoing any permanent chemical change." },
-                { key: "C", "word": "repertory", part: "n.", trans: "常備劇目", def: "A stock of plays, dances, or pieces that a company or performer knows or is prepared to perform." },
-                { key: "D", "word": "injunction", part: "n.", trans: "禁令", def: "An authoritative warning or order." }
-            ]},
-            { question: "The witness offered a detailed ______ of the suspect's appearance to the police sketch artist.", answerKey: "A", options: [
-                { key: "A", word: "description", part: "n.", trans: "描述", def: "A spoken or written representation or account of a person, object, or event." },
-                { key: "B", word: "apprehension", part: "n.", trans: "擔憂", def: "Anxiety or fear that something bad or unpleasant will happen." },
-                { key: "C", "word": "propensity", part: "n.", trans: "傾向", def: "An inclination or natural tendency to behave in a particular way." },
-                { key: "D", "word": "compliance", part: "n.", trans: "順從", def: "The action or fact of complying with a wish or command." }
-            ]},
-            { question: "Due to the storm, the scheduled outdoor concert had to be ______ to the following weekend.", answerKey: "B", options: [
-                { key: "A", word: "dispelled", part: "v.", trans: "驅散", def: "Make (a doubt, feeling, or belief) disappear." },
-                { key: "B", word: "postponed", part: "v.", trans: "延期", def: "Cause or arrange for (something) to take place at a time later than that first scheduled." },
-                { key: "C", "word": "extracted", part: "v.", trans: "提取", def: "Remove or take out, especially by effort or force." },
-                { key: "D", "word": "fabricated", part: "v.", trans: "編造", def: "Invent or concoct (something typically false or misleading)." }
-            ]}
-        ];
-
-        let quizQuestions = []; // 用於儲存本次隨機抽取的題目
-        let currentQuestionIndex = 0;
+        let currentUsername = null; 
+        let questionCount = 0; // 用於無限出題模式的題號計數
         let currentQuestion = null;
 
-        // --- 登入邏輯 (保持不變) ---
+        // --- 模擬題庫 (新增 5 題，共 8 題) ---
+        const quizData = [
+            { 
+                question: "The company's new policy states that all employees must maintain a high level of professional ______ in the workplace.", 
+                questionTrans: "公司的新政策規定所有員工在工作場所必須保持高度的專業禮儀。",
+                questionGrammar: "空格處需填入名詞作為 maintain 的受詞，且必須與 professional (專業的) 搭配。",
+                answerKey: "C", 
+                options: [
+                    { key: "A", word: "texture", part: "n.", trans: "質地、手感", def: "The feel or appearance of a surface or a substance." },
+                    { key: "B", word: "devotion", part: "n.", trans: "奉獻、忠誠", def: "Profound dedication or loyalty." },
+                    { key: "C", "word": "decorum", part: "n.", trans: "禮節、端莊", def: "Behavior in keeping with good taste and propriety; etiquette." },
+                    { key: "D", "word": "friction", part: "n.", trans: "摩擦、衝突", def: "Conflict or antagonism." }
+                ]
+            },
+            { 
+                question: "The famous scientist was given a special ______ from the government for his groundbreaking research in sustainable energy.", 
+                questionTrans: "這位著名科學家因其在永續能源方面的突破性研究而獲得政府的特別補助。",
+                questionGrammar: "空格處需填入名詞，作為 be given (被給予) 的受詞。特別的津貼/補助 (a special subsidy) 為常見搭配。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "menace", part: "n.", trans: "威脅、危險的人/物", def: "A person or thing that is likely to cause harm; a threat or danger." },
+                    { key: "B", word: "subsidy", part: "n.", trans: "補助金、津貼", def: "A sum of money granted by the government or a public body to assist an industry or business." },
+                    { key: "C", word: "obstacle", part: "n.", trans: "障礙、阻礙", def: "A thing that blocks one's way or prevents or hinders progress." },
+                    { key: "D", word: "consensus", part: "n.", trans: "共識、一致的意見", def: "General agreement." }
+                ]
+            },
+            { 
+                question: "She found her supervisor's constant criticism to be a ______ source of stress that negatively affected her performance.", 
+                questionTrans: "她發現主管不斷的批評是她持續不斷的壓力來源，對她的表現產生了負面影響。",
+                questionGrammar: "空格處需填入形容詞，修飾 source (來源)。根據句意，這種壓力是『不斷的、永久的』。",
+                answerKey: "C", 
+                options: [
+                    { key: "A", word: "spontaneous", part: "adj.", trans: "自發的", def: "Performed or occurring as a result of a sudden inner impulse." },
+                    { key: "B", word: "clandestine", part: "adj.", trans: "祕密的", def: "Kept secret or done secretively, especially because illicit." },
+                    { key: "C", "word": "perpetual", part: "adj.", trans: "永久的、持續不斷的", def: "Never ending or changing; occurring repeatedly." },
+                    { key: "D", "word": "tentative", part: "adj.", trans: "暫時性的、不確定的", def: "Not certain or fixed; provisional." }
+                ]
+            },
+            // --- 新增題目 1 ---
+            {
+                question: "Due to the storm, the scheduled outdoor concert had to be ______ until the weather improved.",
+                questionTrans: "由於暴風雨，原定的戶外音樂會不得不延期，直到天氣好轉。",
+                questionGrammar: "had to be 後接動詞的過去分詞，且需表達『延期』之意。",
+                answerKey: "A",
+                options: [
+                    { key: "A", word: "postponed", part: "v.", trans: "延期、推遲", def: "Cause or arrange for (something) to take place at a time later than that first scheduled." },
+                    { key: "B", word: "designated", part: "v.", trans: "指定、選定", def: "Appoint (someone) to a specified office or post." },
+                    { key: "C", "word": "stimulated", part: "v.", trans: "刺激、鼓勵", def: "Encourage or help on the development of (something)." },
+                    { key: "D", "word": "persuaded", part: "v.", trans: "說服", def: "Induce (someone) to do something through reasoning or argument." }
+                ]
+            },
+            // --- 新增題目 2 ---
+            {
+                question: "The ancient temple ruins were covered in green moss, giving the whole site a mysterious and ______ atmosphere.",
+                questionTrans: "古老的寺廟廢墟被綠色苔蘚覆蓋，給整個場地一種神秘且莊嚴的氛圍。",
+                questionGrammar: "空格處需填入形容詞，修飾 atmosphere，並與 mysterious (神秘的) 形成並列關係。",
+                answerKey: "D",
+                options: [
+                    { key: "A", word: "turbulent", part: "adj.", trans: "騷亂的、動盪的", def: "Characterized by conflict, disorder, or confusion; not controlled or calm." },
+                    { key: "B", word: "synthetic", part: "adj.", trans: "合成的、人造的", def: "Made by chemical synthesis, especially to imitate a natural product." },
+                    { key: "C", "word": "redundant", part: "adj.", trans: "多餘的、累贅的", def: "Not or no longer needed or useful; superfluous." },
+                    { key: "D", "word": "solemn", part: "adj.", trans: "莊嚴的、嚴肅的", def: "Formal and dignified, often in a religious or serious manner." }
+                ]
+            },
+            // --- 新增題目 3 ---
+            {
+                question: "The detective needed to interview every witness to ______ the truth about the mysterious disappearance.",
+                questionTrans: "偵探需要採訪每一位證人，以查明這宗神秘失蹤案的真相。",
+                questionGrammar: "to 後接動詞原形，表達『查明、確定』之意，與 the truth (真相) 搭配。",
+                answerKey: "A",
+                options: [
+                    { key: "A", word: "ascertain", part: "v.", trans: "查明、確定", def: "Find (something) out for certain; make sure of." },
+                    { key: "B", word: "mitigate", part: "v.", trans: "減輕、緩和", def: "Make less severe, serious, or painful." },
+                    { key: "C", "word": "disperse", part: "v.", trans: "分散、驅散", def: "Distribute or spread over a wide area." },
+                    { key: "D", "word": "recede", part: "v.", trans: "後退、撤回", def: "Go or move back or further away from a previous position." }
+                ]
+            },
+             // --- 新增題目 4 ---
+            {
+                question: "The new medication had the unexpected ______ of making the patient extremely drowsy.",
+                questionTrans: "這種新藥產生了出乎意料的副作用，讓病人非常想睡覺。",
+                questionGrammar: "空格處需填入名詞，作為 had 的受詞，且是 unintended (意外的) 帶來的結果。",
+                answerKey: "D",
+                options: [
+                    { key: "A", word: "incentive", part: "n.", trans: "動機、誘因", def: "A thing that motivates or encourages someone to do something." },
+                    { key: "B", word: "monopoly", part: "n.", trans: "壟斷、專利", def: "The exclusive possession or control of the supply or trade in a commodity or service." },
+                    { key: "C", "word": "reservoir", part: "n.", trans: "水庫、儲藏地", def: "A large natural or artificial lake used as a source of water supply." },
+                    { key: "D", "word": "side effect", part: "n.", trans: "副作用", def: "A secondary, typically undesirable effect of a drug or medical treatment." }
+                ]
+            },
+            // --- 新增題目 5 ---
+            {
+                question: "The company's goal is to create an environmentally ______ product that uses recycled materials.",
+                questionTrans: "該公司的目標是創造一種使用回收材料的環保產品。",
+                questionGrammar: "空格處需填入形容詞，修飾 product，表達『友好的、無害的』之意，與 environmentally 搭配。",
+                answerKey: "C",
+                options: [
+                    { key: "A", word: "fragile", part: "adj.", trans: "易碎的、脆弱的", def: "Easily broken or damaged." },
+                    { key: "B", word: "pensive", part: "adj.", trans: "沉思的、憂鬱的", def: "Engaged in or reflecting deep or serious thought." },
+                    { key: "C", "word": "benign", part: "adj.", trans: "良性的、無害的", def: "Gentle and kind; not harmful in effect." },
+                    { key: "D", "word": "verbose", part: "adj.", trans: "囉唆的、冗長的", def: "Using or expressed in more words than are needed." }
+                ]
+            }
+        ];
+        
+        // --- 頁面切換邏輯 ---
+        function changePage(pageId) {
+            document.querySelectorAll('.page-area').forEach(page => {
+                page.style.display = 'none';
+            });
+            document.getElementById(pageId).style.display = 'block';
+            
+            if (pageId === 'my-vocab-area') {
+                showMyVocab(); // 切換到單字表時，重新載入單字表內容
+            } else if (pageId === 'home-area' && currentUsername) {
+                document.getElementById('welcome-message').textContent = `歡迎回來，${currentUsername}！`;
+            }
+        }
+        
+        // --- 登入/登出邏輯 ---
         function simulateLogin() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
             const message = document.getElementById('login-message');
             
-            if (user.trim() === "" || pass.trim() === "") {
+            if (user === "" || pass === "") {
                 message.textContent = "用戶名和密碼不能為空。";
                 return;
             }
-
-            message.textContent = "登入成功！正在載入測驗...";
+            
+            currentUsername = user; 
+            message.textContent = "登入成功！正在載入...";
             message.style.color = "green";
             
             setTimeout(() => {
-                document.getElementById('login-container').style.display = 'none'; 
-                document.getElementById('quiz-container').style.display = 'block'; 
-                startQuiz(); // 啟動測驗
+                changePage('home-area');
             }, 1000); 
         }
 
-        // --- 隨機出題邏輯 ---
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+        function logout() {
+            if (confirm('確定要登出嗎？您的紀錄將被保留，下次登入時可見。')) {
+                currentUsername = null; 
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('login-message').textContent = '';
+                changePage('login-area');
+                alert('已登出。');
             }
         }
 
-        function startQuiz() {
-            // 1. 隨機抽取 QUIZ_LENGTH 數量的題目
-            shuffle(quizData);
-            quizQuestions = quizData.slice(0, QUIZ_LENGTH);
-            currentQuestionIndex = 0;
-            
-            // 2. 顯示我的單字表
-            showMyVocab();
-
-            // 3. 載入第一道題
-            loadQuestion();
+        // --- 儲存 Key 產生器 (確保多帳號紀錄) ---
+        function _getStorageKey(baseKey) {
+            if (!currentUsername) {
+                console.error('No user logged in.');
+                return null;
+            }
+            return `${baseKey}_${currentUsername.toLowerCase()}`;
         }
 
-        // --- 單字收藏邏輯 (新增) ---
-        function getMyVocab() {
-            const storedData = localStorage.getItem(MY_WORDS_KEY);
+        // --- 單字收藏/錯題本邏輯 ---
+
+        function getMyVocab() { 
+            const key = _getStorageKey(MY_WORDS_KEY);
+            if (!key) return [];
+            const storedData = localStorage.getItem(key);
             return storedData ? JSON.parse(storedData) : [];
         }
-
+        
         function toggleMyVocab(wordData, element) {
+            const key = _getStorageKey(MY_WORDS_KEY);
+            if (!key) return;
+            
             let myVocab = getMyVocab();
             const wordKey = wordData.word;
             const index = myVocab.findIndex(item => item.word === wordKey);
 
             if (index === -1) {
-                // 收藏
                 myVocab.push(wordData);
                 element.classList.add('collected');
                 alert(`「${wordKey}」已加入您的單字表！`);
             } else {
-                // 取消收藏
                 myVocab.splice(index, 1);
                 element.classList.remove('collected');
                 alert(`「${wordKey}」已從單字表中移除！`);
             }
-            localStorage.setItem(MY_WORDS_KEY, JSON.stringify(myVocab));
-            showMyVocab(); // 重新載入列表
+            localStorage.setItem(key, JSON.stringify(myVocab));
+            // 如果當前在單字表頁面，則刷新顯示
+            if (document.getElementById('my-vocab-area').style.display === 'block') { showMyVocab(); }
         }
 
-        function clearMyVocab() {
-             if (confirm('確定要清除所有收藏單字嗎？')) {
-                localStorage.removeItem(MY_WORDS_KEY);
-                alert('收藏單字紀錄已清除！');
-                showMyVocab(); // 清除後重新載入列表
-            }
-        }
-
-        // 顯示我的單字表列表
         function showMyVocab() {
             const myVocab = getMyVocab();
             const reviewBody = document.getElementById('my-vocab-body');
@@ -434,70 +514,76 @@
                 });
             }
         }
+        
+        function clearMyVocab() {
+            const key = _getStorageKey(MY_WORDS_KEY);
+            if (!key) return;
+            if (confirm(`確定要清除用戶 ${currentUsername} 的所有收藏單字嗎？`)) {
+                localStorage.removeItem(key);
+                alert('收藏單字紀錄已清除！');
+                showMyVocab(); 
+            }
+        }
 
-        // --- 錯題本儲存邏輯 (保持不變) ---
-        function getWrongWords() {
-            const storedData = localStorage.getItem(WRONG_WORDS_KEY);
+
+        function getWrongWords() { 
+            const key = _getStorageKey(WRONG_WORDS_KEY);
+            if (!key) return [];
+            const storedData = localStorage.getItem(key);
             return storedData ? JSON.parse(storedData) : [];
         }
 
         function addWrongWord(wordData) {
+            const key = _getStorageKey(WRONG_WORDS_KEY);
+            if (!key) return;
+
             let wrongWords = getWrongWords();
             const isDuplicate = wrongWords.some(item => item.word === wordData.word);
-            
             if (!isDuplicate) {
                 wrongWords.push(wordData);
-                localStorage.setItem(WRONG_WORDS_KEY, JSON.stringify(wrongWords));
+                localStorage.setItem(key, JSON.stringify(wrongWords));
             }
         }
 
-        function clearWrongWords() {
-            if (confirm('確定要清除所有錯題紀錄嗎？')) {
-                localStorage.removeItem(WRONG_WORDS_KEY);
-                alert('錯題紀錄已清除！');
-                showReviewList(); 
-            }
+        // --- AI 載入邏輯 ---
+
+        async function getNewQuestionFromAI() {
+            // 模擬網絡延遲 (AI 思考時間)
+            await new Promise(resolve => setTimeout(resolve, 500)); 
+            
+            // 模擬從擴充後的題庫中隨機選取一題 (無限重複使用)
+            const randomIndex = Math.floor(Math.random() * quizData.length);
+            return quizData[randomIndex];
+        }
+
+        function startQuiz() {
+            questionCount = 0; // 開始新的無限測驗，題號歸零
+            changePage('quiz-area');
+            loadQuestion();
         }
         
-        function showReviewList() {
-            const reviewArea = document.getElementById('review-area');
-            reviewArea.style.display = 'block';
-            const wrongWords = getWrongWords();
-            const reviewBody = document.getElementById('review-body');
-            reviewBody.innerHTML = '';
-            
-            if (wrongWords.length === 0) {
-                reviewBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">太棒了！您目前沒有錯題紀錄。</td></tr>';
-                document.getElementById('clear-btn').style.display = 'none';
-                document.getElementById('review-count').textContent = '（共 0 個單字）';
-            } else {
-                document.getElementById('review-count').textContent = `（共 ${wrongWords.length} 個單字）`;
-                document.getElementById('clear-btn').style.display = 'block';
-                wrongWords.forEach(item => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${item.word}</td>
-                        <td>${item.part}</td>
-                        <td>${item.trans}</td>
-                        <td>${item.def}</td>
-                    `;
-                    reviewBody.appendChild(row);
-                });
-            }
+        function endQuiz() {
+            // 結束無限測驗並返回首頁
+            changePage('home-area');
         }
 
-        // --- 測驗邏輯 (隨機出題) ---
-        function loadQuestion() {
-            if (currentQuestionIndex < quizQuestions.length) {
-                currentQuestion = quizQuestions[currentQuestionIndex];
+        async function loadQuestion() {
+            // 1. 顯示載入狀態
+            document.getElementById('loading-message').style.display = 'block';
+            document.getElementById('quiz-content').style.display = 'none';
+
+            try {
+                // 2. 獲取新題目 (模擬 AI 生成)
+                currentQuestion = await getNewQuestionFromAI();
+                questionCount++;
                 
-                document.getElementById('question-number').textContent = `Question ${currentQuestionIndex + 1} / ${quizQuestions.length}`;
+                // 3. 更新介面
+                document.getElementById('question-number').textContent = `Question ${questionCount}`;
                 document.getElementById('question-text').textContent = currentQuestion.question;
                 
                 const optionsContainer = document.getElementById('options-container');
                 optionsContainer.innerHTML = ''; 
                 
-                // 檢查哪些單字已被收藏，用於在選項旁邊顯示星號
                 const myVocabWords = getMyVocab().map(item => item.word);
 
                 currentQuestion.options.forEach(option => {
@@ -512,21 +598,23 @@
                     const optionItem = document.createElement('div');
                     optionItem.className = 'option-item';
 
-                    // 選項標籤 (用於點選 radio)
                     const label = document.createElement('label');
                     label.className = 'option-label';
                     label.innerHTML = `
-                        <input type="radio" name="answer" value="${option.key}">
+                        <input type="radio" name="answer" value="${option.key}" id="option-${option.key}">
                         (${option.key}) ${option.word}
                     `;
+                    label.onclick = () => {
+                        document.getElementById(`option-${option.key}`).checked = true;
+                    };
 
-                    // 收藏按鈕 (點擊收藏)
+
                     const favBtn = document.createElement('span');
                     favBtn.className = 'favorite-btn' + (isCollected ? ' collected' : '');
                     favBtn.textContent = '⭐';
                     favBtn.onclick = (e) => {
-                        e.preventDefault(); // 防止點擊星號時選中 Radio 按鈕
-                        e.stopPropagation(); // 阻止事件冒泡到 label
+                        e.preventDefault(); 
+                        e.stopPropagation(); 
                         toggleMyVocab(wordData, favBtn);
                     };
 
@@ -535,17 +623,21 @@
                     optionsContainer.appendChild(optionItem);
                 });
 
+                // 4. 隱藏載入狀態，顯示內容
                 document.getElementById('explanation-area').style.display = 'none';
-                document.getElementById('quiz-area').style.display = 'block';
                 document.getElementById('feedback').textContent = '';
                 document.getElementById('submit-btn').disabled = false;
                 document.getElementById('submit-btn').style.backgroundColor = '#4caf50';
-                document.getElementById('review-area').style.display = 'none';
-            } else {
-                // 所有題目已完成
-                document.getElementById('quiz-area').innerHTML = '<h2>測驗完成！</h2><p>本次隨機測驗已結束。請見下方的錯題本與收藏單字回顧您的學習。</p><button onclick="startQuiz()" style="background-color: #0d47a1;">開始新的隨機測驗</button>';
-                document.getElementById('explanation-area').style.display = 'none';
-                showReviewList(); // 顯示錯題本
+                document.getElementById('loading-message').style.display = 'none';
+                document.getElementById('quiz-content').style.display = 'block';
+
+            } catch (error) {
+                // 錯誤處理
+                document.getElementById('question-text').textContent = `載入題目失敗：${error.message}。請檢查網路或稍後再試。`;
+                document.getElementById('options-container').innerHTML = '';
+                document.getElementById('submit-btn').disabled = true;
+                document.getElementById('loading-message').style.display = 'none';
+                document.getElementById('quiz-content').style.display = 'block';
             }
         }
 
@@ -594,6 +686,11 @@
         }
 
         function showExplanation() {
+            // 顯示題目解釋
+            document.getElementById('translation-text').textContent = currentQuestion.questionTrans || '無翻譯提供。';
+            document.getElementById('grammar-text').textContent = currentQuestion.questionGrammar || '無語法分析提供。';
+
+            // 顯示選項單字詳解
             const explanationBody = document.getElementById('explanation-body');
             explanationBody.innerHTML = ''; 
             
@@ -617,13 +714,13 @@
         }
 
         function nextQuestion() {
-            currentQuestionIndex++;
+            // 在無限出題模式下，直接載入下一題
             loadQuestion();
         }
 
-        // 網頁載入完成後，只顯示登入畫面
+        // 網頁載入完成後，顯示登入畫面
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('login-container').style.display = 'block';
+            changePage('login-area');
         });
         /* ============================================================= */
     </script>
