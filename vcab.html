@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學測英文詞彙挑戰：5000 題巨型題庫版</title>
+    <style>
+        /* ==================== CSS 樣式區塊 (與前一版相同，確保大型資料集下的美觀與功能) ==================== */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .main-wrapper {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e88e5;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* ------------------ 頁面切換、登入和首頁樣式 ------------------ */
+        .page-area {
+            display: none; 
+            padding-top: 20px;
+        }
+
+        .login-container, .home-area {
+            max-width: 400px;
+            margin: 100px auto 0;
+            text-align: center;
+        }
+
+        .home-area button, .login-container button, #clear-my-vocab-btn {
+            background-color: #0d47a1;
+            color: white;
+            padding: 15px 30px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+
+        .home-area button:hover, .login-container button:hover {
+            background-color: #0c397e;
+        }
+        
+        #review-quiz-btn {
+            background-color: #e65100;
+        }
+        #review-quiz-btn:hover {
+            background-color: #bf360c;
+        }
+
+        .login-container input {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        /* ---------------------------------------------------- */
+
+        .question-text {
+            font-size: 1.15em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-left: 5px solid #1e88e5;
+            border-radius: 4px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f0f0f0;
+            margin: 8px 0;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: background-color 0.2s; 
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .favorite-btn {
+            cursor: pointer;
+            font-size: 1.5em;
+            color: #ccc;
+            margin-left: 10px;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .favorite-btn.collected {
+            color: gold;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        /* 提交和下一題按鈕 */
+        #submit-btn, .explanation-area button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #loading-message {
+            text-align: center;
+            font-size: 1.2em;
+            color: #1e88e5;
+            padding: 30px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .correct {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .incorrect {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .warning { 
+            background-color: #fff3e0; 
+            color: #f57c00;
+        }
+
+        /* 詳解區域 */
+        .explanation-area {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #ccc;
+        }
+        
+        .explanation-details {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px dashed #bdbdbd;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+        }
+
+        .explanation-details h4 {
+            color: #0d47a1;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        /* 表格樣式 */
+        #explanation-table, #my-vocab-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        #explanation-table th, #explanation-table td, 
+        #my-vocab-table th, #my-vocab-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        #explanation-table th, #my-vocab-table th {
+            background-color: #bbdefb;
+            color: #1a237e;
+        }
+
+        #clear-my-vocab-btn {
+            background-color: #f44336;
+        }
+        #clear-my-vocab-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="main-wrapper">
+        <h1 id="main-title">✍️ 學測英文詞彙挑戰：5000 題巨型題庫版</h1>
+
+        <div class="page-area login-container" id="login-area">
+            <h2>用戶登入</h2>
+            <p style="color: #666; font-size: 0.9em;">(請輸入任何用戶名，密碼僅為示意)</p>
+            <input type="text" id="username" placeholder="用戶名 (User)">
+            <button onclick="simulateLogin()">登入</button>
+            <p id="login-message" style="color: red; margin-top: 10px;"></p>
+        </div>
+
+        <div class="page-area home-area" id="home-area">
+            <h2 id="welcome-message">歡迎回來！</h2>
+            <p style="color: #4a148c; font-weight: bold;">(注意：如果題庫超過 1000 題，初次載入可能會花費幾秒鐘。)</p>
+            <button onclick="startQuiz(false)">▶️ 開始 Level 5 & 6 **情境**測驗 (共 <span id="quiz-pool-count"></span> 題)</button>
+            <button id="review-quiz-btn" onclick="startQuiz(true)">🎯 重測我的錯題 (<span id="wrong-word-count">0</span> 個單字)</button>
+            <button onclick="changePage('my-vocab-area')">⭐ 查看我的單字表</button>
+            <button onclick="logout()" style="background-color: #888; margin-top: 30px;">🚪 登出</button>
+        </div>
+
+        <div class="page-area" id="quiz-area">
+            <button onclick="endQuiz()" style="background-color: #555; width: auto; padding: 10px 15px; margin-bottom: 15px;">⬅️ 結束測驗，返回首頁</button>
+
+            <h2 id="question-number">Question N</h2>
+            
+            <p id="loading-message" style="display:none;">
+                🤖 正在載入題目中... 請稍候...
+            </p>
+
+            <div id="quiz-content">
+                <p id="question-text" class="question-text"></p>
+                
+                <div id="options-container" class="options-container">
+                    </div>
+                
+                <button id="submit-btn" onclick="checkAnswer()">確認作答</button>
+                
+                <div id="feedback" class="feedback"></div>
+            
+                <div id="explanation-area" class="explanation-area" style="display: none;">
+                    
+                    <div class="explanation-details">
+                        <h4>中文翻譯 (整句)</h4>
+                        <p id="translation-text"></p>
+                        <h4>詞彙/語法分析</h4>
+                        <p id="grammar-text"></p>
+                    </div>
+
+                    <h3>💡 選項單字詳解</h3>
+                    <table id="explanation-table">
+                        <thead>
+                            <tr>
+                                <th>單字 (Word)</th>
+                                <th>詞性 (Part)</th>
+                                <th>翻譯 (Translation)</th>
+                                <th>英文解釋 (Definition)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="explanation-body">
+                            </tbody>
+                    </table>
+                    <button id="next-btn" onclick="nextQuestion()">下一題</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-area" id="my-vocab-area">
+            <button onclick="changePage('home-area')" style="background-color: #555; width: auto; padding: 10px 15px; margin-bottom: 15px;">⬅️ 返回首頁</button>
+
+            <h2>⭐ 我的單字表 <span id="my-vocab-count"></span></h2>
+            <p style="text-align: center; color: #777;">點擊測驗中的 <span style="font-size: 1.2em;">⭐</span> 圖示即可收藏單字。</p>
+            <table id="my-vocab-table">
+                <thead>
+                    <tr>
+                        <th>單字 (Word)</th>
+                        <th>詞性 (Part)</th>
+                        <th>翻譯 (Translation)</th>
+                        <th>英文解釋 (Definition)</th>
+                    </tr>
+                </thead>
+                <tbody id="my-vocab-body">
+                    </tbody>
+            </table>
+            <button id="clear-my-vocab-btn" onclick="clearMyVocab()">清除所有收藏單字</button>
+        </div>
+    </div>
+
+    <script>
+        /* ==================== JavaScript 邏輯區塊 ==================== */
+        const WRONG_WORDS_KEY = 'quizWrongWords_CEEC_BIG_5K'; 
+        const MY_WORDS_KEY = 'myVocabWords_CEEC_BIG_5K';      
+        
+        let currentUsername = null; 
+        let questionCount = 0; 
+        let currentQuestion = null;
+        
+        let isReviewMode = false;
+        let reviewQuestionIndex = 0;
+        let reviewQuizData = [];
+
+        // ------------------------------------------------------------------------------------------------------
+        // *** 核心題庫區塊 (50 題範例 + 4950 題預留空間) ***
+        // ------------------------------------------------------------------------------------------------------
+        const contextualQuizPool = [
+            // ----------------------------------------------------
+            // 範例題 1-50 (高品質學測 Level 5/6 核心詞彙情境題)
+            // ----------------------------------------------------
+            { 
+                question: "The pharmaceutical company faced severe criticism for prioritizing profit over public health, showing a profound lack of ethical _______.", 
+                questionTrans: "這家製藥公司因將利潤置於公共健康之上而面臨嚴厲批評，顯示出嚴重缺乏道德上的**責任 (或命令)**。",
+                questionGrammar: "空格處需填入名詞，表示『必要的原則或道德命令』，作為 ethical (道德的) 的中心概念。",
+                answerKey: "D", 
+                options: [
+                    { key: "A", word: "repertoire", part: "n.", trans: "全部技能；曲目", def: "A stock of skills or types of behavior." },
+                    { key: "B", word: "tenet", part: "n.", trans: "原則；信條", def: "A principle or belief, especially one of the main principles." },
+                    { key: "C", "word": "discretion", part: "n.", trans: "謹慎；自由決定權", def: "The quality of behaving or speaking in such a way as to avoid causing offense." },
+                    { key: "D", "word": "imperative", part: "n.", trans: "必要的事；命令；義務", def: "An essential or urgent thing; a principle that must be adhered to." }
+                ]
+            },
+            { 
+                question: "Before the merger, the board hired an outside firm to meticulously _______ the financial records for any hidden irregularities.", 
+                questionTrans: "在合併之前，董事會聘請了一家外部公司來仔細**審查**財務記錄，以查找任何隱藏的違規行為。",
+                questionGrammar: "空格處需填入動詞原形，表示『仔細檢查或審查』，與 meticulously (細緻地) 搭配最佳。",
+                answerKey: "C", 
+                options: [
+                    { key: "A", word: "elucidate", part: "v.", trans: "闡明；解釋清楚", def: "Make (something) clear." },
+                    { key: "B", word: "disparage", part: "v.", trans: "貶低；輕視", def: "Regard or represent as being of little worth." },
+                    { key: "C", "word": "scrutinize", part: "v.", trans: "仔細檢查；詳細審查", def: "Examine or inspect closely and thoroughly." },
+                    { key: "D", "word": "coerce", part: "v.", trans: "強制；脅迫", def: "Persuade (an unwilling person) to do something by using force or threats." }
+                ]
+            },
+            { 
+                question: "The editor advised the student writer to avoid being overly _______, suggesting he cut down on unnecessary phrases and clauses.", 
+                questionTrans: "編輯建議這位學生作家避免過於**冗長**，建議他刪減不必要的詞組和子句。",
+                questionGrammar: "空格處需填入形容詞，描述寫作風格。與後面『刪減不必要的詞句』的要求相符。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "pensive", part: "adj.", trans: "沉思的；憂鬱的", def: "Engaged in or reflecting deep or serious thought." },
+                    { key: "B", word: "verbose", part: "adj.", trans: "囉唆的；冗長的", def: "Using or expressed in more words than are needed." },
+                    { key: "C", "word": "subtle", part: "adj.", trans: "微妙的；難以察覺的", def: "So delicate or precise as to be difficult to analyze." },
+                    { key: "D", "word": "somber", part: "adj.", trans: "憂鬱的；低沉的", def: "Dark or dull in color or tone; gloomy." }
+                ]
+            },
+            { 
+                question: "The breakthrough technology will likely _______ the process of vaccine development, reducing the timeline from years to mere months.", 
+                questionTrans: "這項突破性的技術很可能會**加速**疫苗開發的過程，將時間線從數年減少到僅數月。",
+                questionGrammar: "空格處需填入動詞原形，表示『使...更快』。與 reducing the timeline (縮短時間線) 的結果相符。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "deteriorate", part: "v.", trans: "惡化；變壞", def: "Become progressively worse." },
+                    { key: "B", word: "expedite", part: "v.", trans: "加速；促進", def: "Make (an action or process) happen sooner or be accomplished more quickly." },
+                    { key: "C", "word": "languish", part: "v.", trans: "衰弱；受苦", def: "To suffer from being forced to remain in an unpleasant place or situation." },
+                    { key: "D", "word": "peruse", part: "v.", trans: "細讀；詳閱", def: "Read in a careful way." }
+                ]
+            },
+            { 
+                question: "The prosecutor's case was entirely _______, relying only on shaky witness testimonies and having no hard physical evidence.", 
+                questionTrans: "檢察官的案件完全是**間接的**，僅依賴不可靠的證人證詞，沒有確鑿的實體證據。",
+                questionGrammar: "空格處需填入形容詞，修飾 case (案件)。與 having no hard physical evidence (沒有確鑿的實體證據) 形成對比。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "immutable", part: "adj.", trans: "不變的；不可改變的", def: "Unchanging over time or unable to be changed." },
+                    { key: "B", word: "circumstantial", part: "adj.", trans: "間接的；依情況而定的", def: "Pointing indirectly toward someone's guilt but not conclusively proving it." },
+                    { key: "C", "word": "fallacious", part: "adj.", trans: "錯誤的；誤導的", def: "Based on a mistaken belief." },
+                    { key: "D", "word": "feudal", part: "adj.", trans: "封建的", def: "Relating to the feudal system." }
+                ]
+            },
+            { 
+                question: "Despite her massive wealth, the actress lived an extremely _______ lifestyle, rarely appearing in public or attending events.", 
+                questionTrans: "儘管財富龐大，這位女演員過著極度**隱居的**生活，很少公開露面或參加活動。",
+                questionGrammar: "空格處需填入形容詞，描述 lifestyle (生活方式)。根據後面『很少公開露面』的情境，應指與世隔絕。",
+                answerKey: "D", 
+                options: [
+                    { key: "A", word: "arduous", part: "adj.", trans: "費力的；艱鉅的", def: "Involving or requiring strenuous effort." },
+                    { key: "B", word: "sanguine", part: "adj.", trans: "樂觀的；自信的", def: "Optimistic or positive." },
+                    { key: "C", "word": "zealous", part: "adj.", trans: "熱心的；熱情的", def: "Having or showing great energy or enthusiasm." },
+                    { key: "D", "word": "reclusive", part: "adj.", trans: "隱居的；孤寂的", def: "Avoiding the company of other people; solitary." }
+                ]
+            },
+            { 
+                question: "The company tried to _______ the negative impact of the flawed product launch with massive advertising campaigns.", 
+                questionTrans: "該公司試圖透過大規模廣告活動來**減輕**有缺陷產品發布所帶來的負面影響。",
+                questionGrammar: "空格處需填入動詞原形，目的在於降低 negative impact (負面影響) 的程度。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "obfuscate", part: "v.", trans: "使模糊；使難以理解", def: "Make obscure, unclear, or unintelligible." },
+                    { key: "B", word: "mitigate", part: "v.", trans: "減輕；緩和", def: "Make (something bad) less severe, serious, or painful." },
+                    { key: "C", "word": "transcend", part: "v.", trans: "超越；勝過", def: "Be or go beyond the range or limits of." },
+                    { key: "D", "word": "fabricate", part: "v.", trans: "捏造；偽造", def: "Invent or concoct (something), typically with deceitful intent." }
+                ]
+            },
+            { 
+                question: "The rapid spread of misinformation online proves that the need for digital literacy is now _______ in all educational systems.", 
+                questionTrans: "線上錯誤資訊的迅速傳播證明，對數位素養的需求現在在所有教育系統中都是**無處不在**的。",
+                questionGrammar: "空格處需填入形容詞，修飾 need (需求)。與 in all educational systems (在所有教育系統中) 吻合。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "ephemeral", part: "adj.", trans: "短暫的；轉瞬即逝的", def: "Lasting for a very short time." },
+                    { key: "B", word: "ubiquitous", part: "adj.", trans: "無處不在的；普遍存在的", def: "Present, appearing, or found everywhere." },
+                    { key: "C", "word": "meticulous", part: "adj.", trans: "一絲不苟的；仔細的", def: "Showing great attention to detail." },
+                    { key: "D", "word": "turbulent", part: "adj.", trans: "動盪的；混亂的", def: "Characterized by conflict, disorder, or confusion." }
+                ]
+            },
+             { 
+                question: "It is a painful _______ that the most popular tourist destinations are often the first to suffer from environmental degradation.", 
+                questionTrans: "這是一個痛苦的**悖論**，最受歡迎的旅遊目的地往往是最早遭受環境惡化之苦的。",
+                questionGrammar: "空格處需填入名詞，描述一種『看似矛盾但真實的現象』。",
+                answerKey: "A", 
+                options: [
+                    { key: "A", word: "paradox", part: "n.", trans: "悖論；似非而是的論點", def: "A seemingly absurd or self-contradictory statement or proposition that may prove to be true." },
+                    { key: "B", word: "fiasco", part: "n.", trans: "徹底失敗；大失敗", def: "A thing that is a complete failure, especially a ludicrous or humiliating one." },
+                    { key: "C", "word": "acumen", part: "n.", trans: "敏銳；精明", def: "The ability to make good judgments and quick decisions." },
+                    { key: "D", "word": "tribute", part: "n.", trans: "貢品；致敬", def: "An act, statement, or gift that is intended to show respect." }
+                ]
+            },
+            { 
+                question: "The initial agreement between the two companies is highly _______, and final terms are expected to be signed only after a month of intensive talks.", 
+                questionTrans: "這兩家公司之間的初步協議是高度**暫時性的**，最終條款預計在一個月的密集談判後才會簽訂。",
+                questionGrammar: "空格處需填入形容詞，描述 agreement (協議) 的性質。後面強調最終條款尚未確定，暗示協議是暫時的。",
+                answerKey: "C", 
+                options: [
+                    { key: "A", word: "perpetual", part: "adj.", trans: "永久的；持續不斷的", def: "Never ending or changing." },
+                    { key: "B", word: "redundant", part: "adj.", trans: "多餘的；累贅的", def: "Not or no longer needed or useful." },
+                    { key: "C", "word": "tentative", part: "adj.", trans: "暫時性的；不確定的", def: "Not certain or fixed; provisional." },
+                    { key: "D", "word": "solemn", part: "adj.", trans: "莊嚴的；嚴肅的", def: "Formal and dignified." }
+                ]
+            },
+            { 
+                question: "The politician's attempt to deflect criticism with irrelevant remarks was seen as a deliberate attempt to _______ the core issue.", 
+                questionTrans: "這位政客試圖用不相關的言論轉移批評，被視為是故意**模糊**核心問題的行為。",
+                questionGrammar: "空格需要一個動詞原形，表示使事情變得不清楚或難以理解。",
+                answerKey: "A", 
+                options: [
+                    { key: "A", word: "obfuscate", part: "v.", trans: "使模糊；使難以理解", def: "Make obscure, unclear, or unintelligible." },
+                    { key: "B", word: "venerate", part: "v.", trans: "尊敬；崇敬", def: "Regard with great respect." },
+                    { key: "C", "word": "exonerate", part: "v.", trans: "免除責任；證明無罪", def: "Absolve (someone) from blame for a fault or wrongdoing." },
+                    { key: "D", "word": "augment", part: "v.", trans: "增加；擴大", def: "Make (something) greater by adding to it." }
+                ]
+            },
+            { 
+                question: "The ancient artifacts found at the site are considered highly _______ because they challenge long-held historical beliefs.", 
+                questionTrans: "在這個地點發現的古代文物被認為具有高度的**顛覆性**，因為它們挑戰了長期以來持有的歷史信念。",
+                questionGrammar: "空格需要形容詞，描述文物對歷史觀點的影響。它們挑戰了既有信念，因此是顛覆性的。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "irrefutable", part: "adj.", trans: "不容反駁的", def: "Impossible to deny or disprove." },
+                    { key: "B", word: "subversive", part: "adj.", trans: "顛覆性的；破壞性的", def: "Seeking or intended to undermine an established system or institution." },
+                    { key: "C", "word": "perfunctory", part: "adj.", trans: "敷衍的；馬虎的", def: "Carried out with a minimum of effort or reflection." },
+                    { key: "D", "word": "monetary", part: "adj.", trans: "貨幣的；金融的", def: "Relating to money or currency." }
+                ]
+            },
+            { 
+                question: "Despite the massive investment, the project turned out to be a complete _______, resulting in the loss of millions of dollars.", 
+                questionTrans: "儘管投入了巨額資金，這個項目最終證明是徹底的**大失敗**，導致數百萬美元的損失。",
+                questionGrammar: "空格需要名詞，描述一個徹底的失敗或災難。",
+                answerKey: "C", 
+                options: [
+                    { key: "A", word: "precedent", part: "n.", trans: "先例；前例", def: "An earlier event or action that is regarded as an example or guide." },
+                    { key: "B", word: "inception", part: "n.", trans: "開始；開端", def: "The establishment or starting point of an institution or activity." },
+                    { key: "C", "word": "fiasco", part: "n.", trans: "徹底失敗；大失敗", def: "A thing that is a complete failure, especially a ludicrous or humiliating one." },
+                    { key: "D", "word": "epitome", part: "n.", trans: "縮影；典範", def: "A perfect example of a particular quality or type." }
+                ]
+            },
+            { 
+                question: "The scientific community was polarized by the surprising new theory, leading to a period of intellectual _______.", 
+                questionTrans: "科學界被這個令人驚訝的新理論兩極化，導致了一段智識上的**動盪**時期。",
+                questionGrammar: "空格需要名詞，描述一段混亂或衝突的時期，特別是指思想上的衝突。",
+                answerKey: "D", 
+                options: [
+                    { key: "A", word: "solace", part: "n.", trans: "慰藉；安慰", def: "Comfort or consolation in a time of distress or sadness." },
+                    { key: "B", word: "reparation", part: "n.", trans: "賠償；彌補", def: "The making of amends for a wrong one has done." },
+                    { key: "C", "word": "progeny", part: "n.", trans: "後代；子孫", def: "A descendant or the descendants of a person, animal, or plant." },
+                    { key: "D", "word": "turbulence", part: "n.", trans: "騷亂；動盪", def: "Conflict or confusion." }
+                ]
+            },
+            { 
+                question: "The journalist was warned to stop spreading defamatory and _______ claims about the public official unless he had concrete proof.", 
+                questionTrans: "記者被警告停止散播針對這位公職人員的誹謗性和**虛假**的言論，除非他有確鑿的證據。",
+                questionGrammar: "空格需要形容詞，修飾 claims (言論)。與 defamatory (誹謗性的) 形成並列，指稱言論是捏造或虛假的。",
+                answerKey: "A", 
+                options: [
+                    { key: "A", word: "spurious", part: "adj.", trans: "虛假的；偽造的", def: "Not being what it purports to be; false or fake." },
+                    { key: "B", word: "stringent", part: "adj.", trans: "嚴格的；緊縮的", def: "Strict, precise, and exacting." },
+                    { key: "C", "word": "vociferous", part: "adj.", trans: "大聲疾呼的；喧嚷的", def: "Crying out noisily." },
+                    { key: "D", "word": "resilient", part: "adj.", trans: "有彈性的；適應力強的", def: "Able to recoil or spring back into shape; recovering quickly." }
+                ]
+            },
+            { 
+                question: "The sudden political instability led to a large-scale **_______** of foreign investment from the developing country.", 
+                questionTrans: "突如其來的政治不穩定導致外國投資從這個發展中國家大規模**撤離**。",
+                questionGrammar: "空格需要名詞，表示『撤退、撤離』，通常指軍隊或資產的撤出。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "curtailment", part: "n.", trans: "縮減；限制", def: "The action or fact of reducing or restricting something." },
+                    { key: "B", word: "withdrawal", part: "n.", trans: "撤回；撤離", def: "The action of withdrawing something." },
+                    { key: "C", "word": "convergence", part: "n.", trans: "匯集；趨同", def: "The process or state of converging." },
+                    { key: "D", "word": "stagnation", part: "n.", trans: "停滯；不景氣", def: "A prolonged period of little or no growth." }
+                ]
+            },
+            { 
+                question: "After years of scientific work, she finally received the Nobel Prize, the ultimate **_______** for her dedication to medical research.", 
+                questionTrans: "經過多年的科學研究，她終於獲得了諾貝爾獎，這是對她致力於醫學研究的最終**獎勵**。",
+                questionGrammar: "空格需要名詞，表示對成就或貢獻的獎賞或報酬。",
+                answerKey: "D", 
+                options: [
+                    { key: "A", word: "paradigm", part: "n.", trans: "典範；範例", def: "A typical example or pattern of something." },
+                    { key: "B", word: "plight", part: "n.", trans: "困境；苦境", def: "A dangerous, difficult, or otherwise unfortunate situation." },
+                    { key: "C", "word": "conundrum", part: "n.", trans: "難題；謎題", def: "A confusing and difficult problem or question." },
+                    { key: "D", "word": "recompense", part: "n.", trans: "報酬；補償", def: "Compensation or reward given for loss or harm suffered or effort made." }
+                ]
+            },
+            { 
+                question: "The director's constant yelling at his staff was deemed completely **_______** and unprofessional by the HR department.", 
+                questionTrans: "人事部門認為導演不斷對員工大吼大叫的行為是完全**不可接受的**和不專業的。",
+                questionGrammar: "空格需要形容詞，表示行為是不能被容忍或接受的。",
+                answerKey: "A", 
+                options: [
+                    { key: "A", word: "untenable", part: "adj.", trans: "站不住腳的；不可容忍的", def: "Not able to be maintained or defended against attack or objection." },
+                    { key: "B", word: "discreet", part: "adj.", trans: "謹慎的；不引人注目的", def: "Careful and circumspect in one's speech or actions." },
+                    { key: "C", "word": "docile", part: "adj.", trans: "溫順的；易管教的", def: "Ready to accept control or instruction; submissive." },
+                    { key: "D", "word": "negligible", part: "adj.", trans: "微不足道的；可忽略的", def: "So small or unimportant as to be not worth considering." }
+                ]
+            },
+            { 
+                question: "The small shop relied heavily on **_______** trade, selling unique handicrafts directly to passing tourists.", 
+                questionTrans: "這家小店主要依賴**零售**貿易，將獨特的手工藝品直接賣給路過的遊客。",
+                questionGrammar: "空格需要形容詞，修飾 trade (貿易)，指涉及向消費者銷售商品的活動。",
+                answerKey: "C", 
+                options: [
+                    { key: "A", word: "fiscal", part: "adj.", trans: "財政的；國庫的", def: "Relating to government revenue, especially taxes." },
+                    { key: "B", word: "latent", part: "adj.", trans: "潛伏的；潛在的", def: "(of a quality or state) existing but not yet developed or manifest." },
+                    { key: "C", "word": "retail", part: "adj.", trans: "零售的", def: "The sale of goods to the public in relatively small quantities for use or consumption rather than for resale." },
+                    { key: "D", "word": "secular", part: "adj.", trans: "世俗的；非宗教的", def: "Denoting attitudes, activities, or other things that have no religious or spiritual basis." }
+                ]
+            },
+            { 
+                question: "The military general was a master of **_______**, always planning his attacks in secret and utilizing surprise effectively.", 
+                questionTrans: "這位軍事將領是**計謀**的大師，總是秘密策劃攻擊，並有效地利用出奇制勝。",
+                questionGrammar: "空格需要名詞，指『策略、計謀』，與 planning his attacks in secret (秘密策劃攻擊) 吻合。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "incurrence", part: "n.", trans: "招致；遭受", def: "The fact of being subjected to something unwelcome or unpleasant as a result of one's own actions." },
+                    { key: "B", word: "stratagem", part: "n.", trans: "策略；計謀", def: "A plan or scheme, especially one used to outwit an opponent or achieve an end." },
+                    { key: "C", "word": "vicinity", part: "n.", trans: "附近；鄰近地區", def: "The area near or surrounding a particular place." },
+                    { key: "D", "word": "sanction", part: "n.", trans: "制裁；批准", def: "A threatened penalty for disobeying a law or rule." }
+                ]
+            },
+            { 
+                question: "The entire lecture was so confusing and disorganized that the audience felt completely _______ by the end.", 
+                questionTrans: "整個演講非常混亂和雜亂無章，導致觀眾最後感到完全**困惑不解**。",
+                questionGrammar: "空格需要一個過去分詞 (作形容詞用)，描述聽眾的狀態，指被混亂的內容弄得不知所措。",
+                answerKey: "D", 
+                options: [
+                    { key: "A", word: "rebutted", part: "v. (p.p.)", trans: "被反駁的", def: "Claim or prove that (evidence or an accusation) is false." },
+                    { key: "B", word: "reiterated", part: "v. (p.p.)", trans: "被重申的", def: "Say again or a number of times, typically for emphasis or clarity." },
+                    { key: "C", "word": "emulated", part: "v. (p.p.)", trans: "被效仿的", def: "Match or surpass (a person or achievement), typically by imitation." },
+                    { key: "D", "word": "baffled", part: "v. (p.p.)", trans: "感到困惑的；受挫的", def: "Totally bewilder or perplex." }
+                ]
+            },
+            { 
+                question: "The scientist used a powerful electron microscope to observe the tiny **_______** in the material's crystalline structure.", 
+                questionTrans: "這位科學家使用一台功能強大的電子顯微鏡來觀察材料晶體結構中的微小**瑕疵**。",
+                questionGrammar: "空格需要名詞，指物體結構中微小的缺陷或瑕疵。",
+                answerKey: "C", 
+                options: [
+                    { key: "A", word: "convergence", part: "n.", trans: "匯集；趨同", def: "The process or state of converging." },
+                    { key: "B", word: "amalgamation", part: "n.", trans: "合併；混合", def: "The action, process, or result of combining or uniting." },
+                    { key: "C", "word": "flaws", part: "n.", trans: "瑕疵；缺陷", def: "A fault or defect in something." },
+                    { key: "D", "word": "prelude", part: "n.", trans: "前奏；序幕", def: "An action or event serving as an introduction to something more important." }
+                ]
+            },
+            { 
+                question: "It is often considered a sign of maturity to act with **_______** rather than impulsively.", 
+                questionTrans: "能夠以**深思熟慮**而非衝動行事，通常被視為成熟的標誌。",
+                questionGrammar: "空格需要名詞，與 impulsively (衝動地) 對比，指代『謹慎、深思熟慮』。",
+                answerKey: "A", 
+                options: [
+                    { key: "A", word: "circumspection", part: "n.", trans: "謹慎；深思熟慮", def: "The quality of being wary and unwilling to take risks." },
+                    { key: "B", word: "disarray", part: "n.", trans: "混亂；無秩序", def: "A state of disorganization or untidiness." },
+                    { key: "C", "word": "cynicism", part: "n.", trans: "犬儒主義；憤世嫉俗", def: "An inclination to believe that people are motivated purely by self-interest." },
+                    { key: "D", "word": "complacency", part: "n.", trans: "自滿；得意", def: "A feeling of uncritical satisfaction with oneself or one's achievements." }
+                ]
+            },
+            { 
+                question: "The new CEO promised to lead the company with complete **_______** in all financial reporting to restore public trust.", 
+                questionTrans: "新任執行長承諾在所有財務報告中保持完全的**透明度**，以恢復公眾信任。",
+                questionGrammar: "空格需要名詞，表示『公開、清晰』，特別用於商業和政治語境中，強調資訊的公開。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "animosity", part: "n.", trans: "敵意；仇恨", def: "Strong hostility." },
+                    { key: "B", word: "transparency", part: "n.", trans: "透明度；清晰度", def: "The condition of being transparent." },
+                    { key: "C", "word": "ramification", part: "n.", trans: "後果；影響", def: "A complex or unwelcome consequence of an action or event." },
+                    { key: "D", "word": "stigma", part: "n.", trans: "汙點；恥辱", def: "A mark of disgrace associated with a particular circumstance." }
+                ]
+            },
+            { 
+                question: "The ancient text was so damaged that scholars could only make **_______** conclusions about its original meaning.", 
+                questionTrans: "這部古代文本破損嚴重，學者們只能對其原始含義做出**推測性的**結論。",
+                questionGrammar: "空格需要形容詞，描述結論的性質，指『基於猜測或有限證據的』。",
+                answerKey: "D", 
+                options: [
+                    { key: "A", word: "docile", part: "adj.", trans: "溫順的；易管教的", def: "Ready to accept control or instruction; submissive." },
+                    { key: "B", word: "intrinsic", part: "adj.", trans: "內在的；固有的", def: "Belonging naturally; essential." },
+                    { key: "C", "word": "cohesive", part: "adj.", trans: "有凝聚力的；緊密結合的", def: "Forming a united and coherent whole." },
+                    { key: "D", word: "conjectural", part: "adj.", trans: "推測性的；猜測的", def: "Based on conjecture (guesswork) rather than fact or evidence." }
+                ]
+            },
+            { 
+                question: "The sudden resignation of the CEO created a state of **_______** among the employees, who feared for their jobs.", 
+                questionTrans: "執行長的突然辭職在員工中造成了**混亂**的狀態，他們擔心自己的工作不保。",
+                questionGrammar: "空格需要名詞，指『混亂、騷動』，描述員工因恐懼而產生的情緒狀態。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "acumen", part: "n.", trans: "敏銳；精明", def: "The ability to make good judgments and quick decisions." },
+                    { key: "B", word: "turmoil", part: "n.", trans: "混亂；騷動", def: "A state of great disturbance, confusion, or uncertainty." },
+                    { key: "C", "word": "sanctuary", part: "n.", trans: "避難所；聖地", def: "A place of refuge or safety." },
+                    { key: "D", "word": "epitome", part: "n.", trans: "縮影；典範", def: "A perfect example of a particular quality or type." }
+                ]
+            },
+            { 
+                question: "The committee decided to _______ the controversial section of the proposal to ensure the entire bill would pass.", 
+                questionTrans: "委員會決定**刪除**提案中有爭議的部分，以確保整個法案能夠通過。",
+                questionGrammar: "空格需要動詞原形，表示將有爭議的部分移除或刪掉。",
+                answerKey: "C", 
+                options: [
+                    { key: "A", word: "buttress", part: "v.", trans: "支持；加強", def: "Provide (a building or structure) with projecting supports." },
+                    { key: "B", word: "propagate", part: "v.", trans: "繁殖；傳播", def: "Spread and promote (an idea, theory, etc.) widely." },
+                    { key: "C", "word": "delete", part: "v.", trans: "刪除；除去", def: "Remove or obliterate (written or printed matter)." },
+                    { key: "D", "word": "disseminate", part: "v.", trans: "散佈；傳播", def: "Spread (something, especially information, widely)." }
+                ]
+            },
+            { 
+                question: "The athlete's unwavering **_______** to his training schedule was the key factor in his Olympic success.", 
+                questionTrans: "這位運動員對訓練計畫堅定不移的**忠誠**是他在奧運會上成功的關鍵因素。",
+                questionGrammar: "空格需要名詞，指『忠誠、堅持』，常與 to 搭配，指對目標或義務的堅定承諾。",
+                answerKey: "A", 
+                options: [
+                    { key: "A", word: "adherence", part: "n.", trans: "堅持；遵守；忠誠", def: "Attachment or commitment to a person, cause, or belief." },
+                    { key: "B", word: "solace", part: "n.", trans: "慰藉；安慰", def: "Comfort or consolation in a time of distress or sadness." },
+                    { key: "C", "word": "conundrum", part: "n.", trans: "難題；謎題", def: "A confusing and difficult problem or question." },
+                    { key: "D", "word": "epitome", part: "n.", trans: "縮影；典範", def: "A perfect example of a particular quality or type." }
+                ]
+            },
+            { 
+                question: "The artist has always maintained a strict **_______** against commercial work, preferring to focus solely on fine art.", 
+                questionTrans: "這位藝術家一直對商業作品保持著嚴格的**排斥**態度，傾向於只專注於純藝術。",
+                questionGrammar: "空格需要名詞，表示『排斥、厭惡』，指不接受某事物。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "relevance", part: "n.", trans: "相關性；關聯", def: "The quality or state of being closely connected or appropriate." },
+                    { key: "B", word: "aversion", part: "n.", trans: "厭惡；反感；排斥", def: "A strong dislike or disinclination." },
+                    { key: "C", "word": "tenet", part: "n.", trans: "原則；信條", def: "A principle or belief, especially one of the main principles." },
+                    { key: "D", "word": "progeny", part: "n.", trans: "後代；子孫", def: "A descendant or the descendants of a person, animal, or plant." }
+                ]
+            },
+            { 
+                question: "The company's swift **_______** of its marketing strategy allowed it to quickly adapt to the changing consumer demands.", 
+                questionTrans: "該公司對其行銷策略的迅速**調整**使其能夠快速適應不斷變化的消費者需求。",
+                questionGrammar: "空格需要名詞，表示『改變、調整』，以適應外部環境的變化。",
+                answerKey: "A", 
+                options: [
+                    { key: "A", word: "modification", part: "n.", trans: "修改；調整", def: "The action of modifying something." },
+                    { key: "B", word: "incurrence", part: "n.", trans: "招致；遭受", def: "The fact of being subjected to something unwelcome or unpleasant." },
+                    { key: "C", "word": "vicinity", part: "n.", trans: "附近；鄰近地區", def: "The area near or surrounding a particular place." },
+                    { key: "D", "word": "sanction", part: "n.", trans: "制裁；批准", def: "A threatened penalty for disobeying a law or rule." }
+                ]
+            },
+            { 
+                question: "His explanation for being late was entirely **_______**, filled with confusing details that made no sense.", 
+                questionTrans: "他遲到的解釋完全是**雜亂無章的**，充滿了毫無意義的混亂細節。",
+                questionGrammar: "空格需要形容詞，描述解釋的性質，指『缺乏邏輯、混亂的』。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "coherent", part: "adj.", trans: "連貫的；一致的", def: "Logical and consistent." },
+                    { key: "B", word: "incoherent", part: "adj.", trans: "語無倫次的；雜亂無章的", def: "Expressed in an incomprehensible or confusing way." },
+                    { key: "C", "word": "resilient", part: "adj.", trans: "有彈性的；適應力強的", def: "Able to recoil or spring back into shape; recovering quickly." },
+                    { key: "D", "word": "stringent", part: "adj.", trans: "嚴格的；緊縮的", def: "Strict, precise, and exacting." }
+                ]
+            },
+            { 
+                question: "The judge issued a **_______** injunction, demanding an immediate halt to the construction until safety permits were secured.", 
+                questionTrans: "法官發布了一項**緊急的**禁制令，要求立即停止施工，直到取得安全許可為止。",
+                questionGrammar: "空格需要形容詞，描述命令的性質，指『緊急且必須執行的』。",
+                answerKey: "A", 
+                options: [
+                    { key: "A", word: "mandated", part: "adj.", trans: "受命的；法定的", def: "Required by law or policy." },
+                    { key: "B", word: "superficial", part: "adj.", trans: "膚淺的；表面的", def: "Appearing to be true or real only until examined more closely." },
+                    { key: "C", "word": "clandestine", part: "adj.", trans: "祕密的；暗中的", def: "Kept secret or done secretively." },
+                    { key: "D", "word": "venerable", part: "adj.", trans: "值得尊敬的", def: "Accorded a great deal of respect, especially because of age, wisdom, or character." }
+                ]
+            },
+            { 
+                question: "The company's core values are based on the **_______** that all employees deserve respect and fair compensation.", 
+                questionTrans: "該公司的核心價值觀基於所有員工都應得到尊重和公平報酬的**原則**。",
+                questionGrammar: "空格需要名詞，指『原則、信條』，作為核心價值觀的基礎。",
+                answerKey: "D", 
+                options: [
+                    { key: "A", word: "recompense", part: "n.", trans: "報酬；補償", def: "Compensation or reward given for effort made." },
+                    { key: "B", word: "fiasco", part: "n.", trans: "徹底失敗；大失敗", def: "A thing that is a complete failure." },
+                    { key: "C", "word": "dilemma", part: "n.", trans: "困境；兩難", def: "A situation in which a difficult choice has to be made." },
+                    { key: "D", "word": "premise", part: "n.", trans: "前提；基本原則", def: "A previous statement or proposition from which another is inferred or follows as a conclusion." }
+                ]
+            },
+            { 
+                question: "He tried to **_______** the facts to support his weak argument, but the audience easily saw through his deception.", 
+                questionTrans: "他試圖**歪曲**事實來支持他蒼白的論點，但觀眾很容易看穿他的欺騙。",
+                questionGrammar: "空格需要動詞原形，表示『扭曲、歪曲』，常與 facts 搭配，指故意改變事實以誤導他人。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "elucidate", part: "v.", trans: "闡明；解釋清楚", def: "Make (something) clear." },
+                    { key: "B", word: "distort", part: "v.", trans: "扭曲；歪曲", def: "Pull or twist out of shape." },
+                    { key: "C", "word": "disparage", part: "v.", trans: "貶低；輕視", def: "Regard or represent as being of little worth." },
+                    { key: "D", "word": "scrutinize", part: "v.", trans: "仔細檢查；詳細審查", def: "Examine or inspect closely and thoroughly." }
+                ]
+            },
+            { 
+                question: "The discovery of a cure for the chronic disease was a monumental **_______** for the entire medical community.", 
+                questionTrans: "找到治療這種慢性疾病的方法是整個醫學界的巨大**成就**。",
+                questionGrammar: "空格需要名詞，指『成就、功績』，特別是重要的、具有里程碑意義的成就。",
+                answerKey: "C", 
+                options: [
+                    { key: "A", word: "reparation", part: "n.", trans: "賠償；彌補", def: "The making of amends for a wrong one has done." },
+                    { key: "B", word: "stagnation", part: "n.", trans: "停滯；不景氣", def: "A prolonged period of little or no growth." },
+                    { key: "C", "word": "feat", part: "n.", trans: "功績；壯舉", def: "An achievement that requires great courage, skill, or strength." },
+                    { key: "D", "word": "vicinity", part: "n.", trans: "附近；鄰近地區", def: "The area near or surrounding a particular place." }
+                ]
+            },
+            { 
+                question: "The economic downturn was exacerbated by the government's highly **_______** fiscal policies.", 
+                questionTrans: "由於政府高度**不負責任的**財政政策，經濟衰退更加嚴重了。",
+                questionGrammar: "空格需要形容詞，描述政策的性質，指『不謹慎、不負責任的』，導致了負面結果 (exacerbated the downturn)。",
+                answerKey: "A", 
+                options: [
+                    { key: "A", word: "imprudent", part: "adj.", trans: "不謹慎的；不負責任的", def: "Not showing care for the consequences of an action; rash." },
+                    { key: "B", word: "pragmatic", part: "adj.", trans: "務實的；實用主義的", def: "Dealing with things sensibly and realistically." },
+                    { key: "C", "word": "subtle", part: "adj.", trans: "微妙的；難以察覺的", def: "So delicate or precise as to be difficult to analyze." },
+                    { key: "D", "word": "somber", part: "adj.", trans: "憂鬱的；低沉的", def: "Dark or dull in color or tone; gloomy." }
+                ]
+            },
+            { 
+                question: "The novel's narrative structure is so **_______** that readers need to actively piece together the timeline of events.", 
+                questionTrans: "這本小說的敘事結構非常**複雜**，讀者需要積極地拼湊事件的時間線。",
+                questionGrammar: "空格需要形容詞，描述結構的複雜性，讓理解變得困難。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "superficial", part: "adj.", trans: "膚淺的；表面的", def: "Appearing to be true or real only until examined more closely." },
+                    { key: "B", word: "convoluted", part: "adj.", trans: "複雜的；盤繞的", def: "Extremely complex and difficult to follow." },
+                    { key: "C", "word": "pensive", part: "adj.", trans: "沉思的；憂鬱的", def: "Engaged in or reflecting deep or serious thought." },
+                    { key: "D", "word": "verbose", part: "adj.", trans: "囉唆的；冗長的", def: "Using or expressed in more words than are needed." }
+                ]
+            },
+            { 
+                question: "The new tax law is so **_______** that it affects nearly every working citizen in the country.", 
+                questionTrans: "這項新的稅法如此**普遍**，以至於它影響了該國幾乎每個工作的公民。",
+                questionGrammar: "空格需要形容詞，描述影響範圍的廣泛性。",
+                answerKey: "A", 
+                options: [
+                    { key: "A", word: "pervasive", part: "adj.", trans: "普遍的；滲透的", def: "Spreading widely throughout an area or a group of people." },
+                    { key: "B", word: "ephemeral", part: "adj.", trans: "短暫的；轉瞬即逝的", def: "Lasting for a very short time." },
+                    { key: "C", "word": "arduous", part: "adj.", trans: "費力的；艱鉅的", def: "Involving or requiring strenuous effort." },
+                    { key: "D", "word": "reclusive", part: "adj.", trans: "隱居的；孤寂的", def: "Avoiding the company of other people; solitary." }
+                ]
+            },
+            { 
+                question: "The board rejected the suggestion, arguing that it lacked **_______** and was too idealistic to implement.", 
+                questionTrans: "董事會否決了這項建議，認為它缺乏**可行性**，而且過於理想化而無法實施。",
+                questionGrammar: "空格需要名詞，指『可行性』，與 too idealistic (過於理想化) 形成對比。",
+                answerKey: "B", 
+                options: [
+                    { key: "A", word: "acumen", part: "n.", trans: "敏銳；精明", def: "The ability to make good judgments and quick decisions." },
+                    { key: "B", word: "feasibility", part: "n.", trans: "可行性", def: "The state or degree of being easily or conveniently done." },
+                    { key: "C", "word": "stigma", part: "n.", trans: "汙點；恥辱", def: "A mark of disgrace associated with a particular circumstance." },
+                    { key: "D", "word": "progeny", part: "n.", trans: "後代；子孫", def: "A descendant or the descendants of a person, animal, or plant." }
+                ]
+            },
+            { 
+                question: "The novel’s main character is characterized by an **_______** quest for knowledge, never satisfied with what he already knows.", 
+                questionTrans: "這本小說的主角被描述為對知識有**貪得無厭的**追求，從不滿足於他已經知道的東西。",
+                questionGrammar: "空格需要形容詞，修飾 quest (追求)，指永不滿足的慾望。",
+                answerKey: "C", 
+                options: [
+                    { key: "A", word: "sanguine", part: "adj.", trans: "樂觀的；自信的", def: "Optimistic or positive." },
+                    { key: "B", word: "solemn", part: "adj.", trans: "莊嚴的；嚴肅的", def: "Formal and dignified." },
+                    { key: "C", "word": "insatiable", part: "adj.", trans: "無法滿足的；貪得無厭的", def: "Impossible to satisfy." },
+                    { key: "D", "word": "conclusive", part: "adj.", trans: "決定性的；確鑿的", def: "Serving to prove a case; decisive or convincing." }
+                ]
+            },
+            // [在此處繼續新增其他 30 題高階範例...] (為保持程式碼簡潔，我會使用一個佔位符)
+
+            // --- 額外 30 題範例開始 (確保至少有 50 題作為框架的基礎) ---
+
+            { 
+                question: "The political commentator’s constant **_______** against the current administration alienated many of his moderate viewers.", 
+                questionTrans: "這位政治評論家不斷針對現任政府進行**謾罵攻擊**，疏遠了許多溫和派的觀眾。",
+                answerKey: "A", 
+                questionGrammar: "空格需要名詞，指『嚴厲的批評或攻擊』，與 alienated (疏遠) 吻合。",
+                options: [
+                    { key: "A", word: "diatribe", part: "n.", trans: "謾罵；抨擊", def: "A forceful and bitter verbal attack against someone or something." },
+                    { key: "B", word: "garrulity", part: "n.", trans: "喋喋不休；多嘴", def: "The quality of being excessively talkative, especially on trivial matters." },
+                    { key: "C", "word": "probity", part: "n.", trans: "正直；誠實", def: "The quality of having strong moral principles; honesty and decency." },
+                    { key: "D", "word": "dichotomy", part: "n.", trans: "二分法；對立", def: "A division or contrast between two things that are or are represented as being opposed or entirely different." }
+                ]
+            },
+            { 
+                question: "The witness’s testimony was completely **_______** with the known facts, making it unreliable.", 
+                questionTrans: "證人的證詞與已知事實完全**不一致**，使其不可靠。",
+                answerKey: "D", 
+                questionGrammar: "空格需要形容詞，表示『不一致、矛盾』，與 unreliable (不可靠) 吻合。",
+                options: [
+                    { key: "A", word: "congruent", part: "adj.", trans: "全等的；一致的", def: "In agreement or harmony." },
+                    { key: "B", word: "resplendent", part: "adj.", trans: "華麗的；燦爛的", def: "Shining brilliantly; gleaming." },
+                    { key: "C", "word": "transient", part: "adj.", trans: "短暫的；暫時的", def: "Lasting only for a short time; impermanent." },
+                    { key: "D", "word": "incongruous", part: "adj.", trans: "不一致的；不協調的", def: "Not in harmony or keeping with the surroundings or other aspects of something." }
+                ]
+            },
+            { 
+                question: "To fully grasp the theory, students must first understand the fundamental **_______** upon which the entire subject is based.", 
+                questionTrans: "要完全掌握這個理論，學生必須首先理解整個學科所基於的根本**公理**。",
+                answerKey: "B", 
+                questionGrammar: "空格需要名詞，指『不證自明的真理或原則』。",
+                options: [
+                    { key: "A", word: "periphery", part: "n.", trans: "邊緣；周邊", def: "The outer limits or edge of an area or object." },
+                    { key: "B", word: "axiom", part: "n.", trans: "公理；不言自明的道理", def: "A statement or proposition which is regarded as being established, accepted, or self-evidently true." },
+                    { key: "C", "word": "vicissitude", part: "n.", trans: "變遷；興衰", def: "A change of circumstances or fortune, typically one that is unwelcome or unpleasant." },
+                    { key: "D", "word": "invective", part: "n.", trans: "辱罵；痛罵", def: "Insulting, abusive, or highly critical language." }
+                ]
+            },
+            { 
+                question: "The director was known for his **_______** style, often changing the script on the day of filming without warning.", 
+                questionTrans: "這位導演以其**反覆無常**的風格而聞名，經常在拍攝當天毫無預警地更改劇本。",
+                answerKey: "C", 
+                questionGrammar: "空格需要形容詞，描述風格，指『不可預測、變化多端』。",
+                options: [
+                    { key: "A", word: "placid", part: "adj.", trans: "平靜的；溫和的", def: "Not easily upset or excited." },
+                    { key: "B", word: "ardent", part: "adj.", trans: "熱心的；熱情的", def: "Enthusiastic or passionate." },
+                    { key: "C", "word": "capricious", part: "adj.", trans: "反覆無常的；任性的", def: "Given to sudden and unaccountable changes of mood or behavior." },
+                    { key: "D", "word": "dogmatic", part: "adj.", trans: "武斷的；教條的", def: "Laying down principles as incontrovertibly true." }
+                ]
+            },
+            { 
+                question: "To avoid accusations of bias, the judge decided to **_______** himself from the case due to his personal connection to the defendant.", 
+                questionTrans: "為避免偏見的指控，法官決定因為與被告的個人關係而**迴避**此案。",
+                answerKey: "A", 
+                questionGrammar: "空格需要動詞原形，指『使自己退出或隔離』。",
+                options: [
+                    { key: "A", word: "recuse", part: "v.", trans: "要求...迴避", def: "Challenge (a judge, prosecutor, or juror) as unqualified to perform legal duties." },
+                    { key: "B", word: "exacerbate", part: "v.", trans: "使惡化；加重", def: "Make (a problem, bad situation, or negative feeling) worse." },
+                    { key: "C", "word": "transcend", part: "v.", trans: "超越；勝過", def: "Be or go beyond the range or limits of." },
+                    { key: "D", "word": "disparage", part: "v.", trans: "貶低；輕視", def: "Regard or represent as being of little worth." }
+                ]
+            },
+            { 
+                question: "The activist's tireless efforts to protect the rainforest were an impressive **_______** of dedication and persistence.", 
+                questionTrans: "這位活動家為保護雨林所做的不懈努力，是奉獻和堅持的令人印象深刻的**典範**。",
+                answerKey: "D", 
+                questionGrammar: "空格需要名詞，指『完美的範例或縮影』。",
+                options: [
+                    { key: "A", word: "solace", part: "n.", trans: "慰藉；安慰", def: "Comfort or consolation in a time of distress or sadness." },
+                    { key: "B", word: "enigma", part: "n.", trans: "謎；難解之謎", def: "A person or thing that is mysterious, puzzling, or difficult to understand." },
+                    { key: "C", "word": "fiasco", part: "n.", trans: "徹底失敗；大失敗", def: "A thing that is a complete failure." },
+                    { key: "D", "word": "epitome", part: "n.", trans: "典範；縮影", def: "A perfect example of a particular quality or type." }
+                ]
+            },
+            { 
+                question: "The company suffered a severe downturn due to a lack of **_______** leadership and clear long-term goals.", 
+                questionTrans: "由於缺乏**有遠見的**領導和明確的長期目標，該公司遭受了嚴重的衰退。",
+                answerKey: "C", 
+                questionGrammar: "空格需要形容詞，修飾 leadership (領導)，指『具有前瞻性、遠見的』。",
+                options: [
+                    { key: "A", word: "obsolete", part: "adj.", trans: "過時的；淘汰的", def: "No longer produced or used; out of date." },
+                    { key: "B", word: "tenuous", part: "adj.", trans: "纖細的；微弱的", def: "Very weak or slight." },
+                    { key: "C", "word": "visionary", part: "adj.", trans: "有遠見的；夢幻般的", def: "Thinking about or planning the future with imagination or wisdom." },
+                    { key: "D", "word": "docile", part: "adj.", trans: "溫順的；易管教的", def: "Ready to accept control or instruction; submissive." }
+                ]
+            },
+            { 
+                question: "The philosopher’s writings often seem deeply **_______**, but closer reading reveals their surprising relevance to modern life.", 
+                questionTrans: "這位哲學家的著作通常看起來深奧難懂，但仔細閱讀就會發現它們與現代生活的驚人**相關性**。",
+                answerKey: "B", 
+                questionGrammar: "空格需要名詞，指『相關性、重要性』。",
+                options: [
+                    { key: "A", word: "plight", part: "n.", trans: "困境；苦境", def: "A dangerous, difficult, or otherwise unfortunate situation." },
+                    { key: "B", word: "relevance", part: "n.", trans: "相關性；關聯", def: "The quality or state of being closely connected or appropriate." },
+                    { key: "C", "word": "sensation", part: "n.", trans: "感覺；轟動", def: "A physical feeling resulting from something that happens to or comes into contact with the body." },
+                    { key: "D", "word": "recompense", part: "n.", trans: "報酬；補償", def: "Compensation or reward given for effort made." }
+                ]
+            },
+            { 
+                question: "The scientist had to **_______** the public's fears about the new genetically modified crop by providing detailed safety data.", 
+                questionTrans: "這位科學家必須透過提供詳細的安全數據來**緩解**公眾對這種新型基因改造作物的擔憂。",
+                answerKey: "A", 
+                questionGrammar: "空格需要動詞原形，指『減輕、緩解 (痛苦或擔憂)』。",
+                options: [
+                    { key: "A", word: "alleviate", part: "v.", trans: "減輕；緩解", def: "Make (suffering, deficiency, or a problem) less severe." },
+                    { key: "B", word: "incite", part: "v.", trans: "煽動；激起", def: "Encourage or stir up (violent or unlawful behavior)." },
+                    { key: "C", "word": "promulgate", part: "v.", trans: "頒布；公佈", def: "Promote or make widely known (an idea or cause)." },
+                    { key: "D", "word": "disseminate", part: "v.", trans: "散佈；傳播", def: "Spread (something, especially information, widely)." }
+                ]
+            },
+            { 
+                question: "The old man had an almost **_______** knowledge of ancient Greek myths, able to recall every minor detail.", 
+                questionTrans: "這位老人對古希臘神話有著近乎**百科全書般**的知識，能夠回憶起每一個微小的細節。",
+                answerKey: "C", 
+                questionGrammar: "空格需要形容詞，指『知識豐富、廣泛全面的』。",
+                options: [
+                    { key: "A", word: "imprudent", part: "adj.", trans: "不謹慎的；不負責任的", def: "Not showing care for the consequences of an action; rash." },
+                    { key: "B", word: "perfunctory", part: "adj.", trans: "敷衍的；馬虎的", def: "Carried out with a minimum of effort or reflection." },
+                    { key: "C", "word": "encyclopedic", part: "adj.", trans: "百科全書般的；知識淵博的", def: "Comprising information on many subjects." },
+                    { key: "D", "word": "tenuous", part: "adj.", trans: "纖細的；微弱的", def: "Very weak or slight." }
+                ]
+            }
+
+            // ------------------------------------------------------------------------------------------------------
+            // *** Placeholder for 4950 more questions ***
+            // 
+            // 為了達到 5000 題的規模，請在以下這個區塊貼上您額外準備的 4950 題的 JavaScript Object 陣列數據。
+            // 確保這些數據與上方的 50 題範例格式一致。
+            // 
+            // ------------------------------------------------------------------------------------------------------
+        ];
+
+
+        // --- Utility function for shuffling array ---
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // --- 提取所有單字以供收藏/錯題本參考 (用於詳解的單字庫) ---
+        // 注意：對於 5000 題的資料集，這個初始化步驟會消耗較多記憶體和時間。
+        // 建議在您貼入所有數據後，保留此步驟，確保詳解和收藏功能正常。
+        const vocabPool = contextualQuizPool.flatMap(q => q.options);
+        const uniqueVocabPool = Array.from(new Map(vocabPool.map(item => [item.word, item])).values());
+
+
+        // --- 錯題複習邏輯 ---
+        function generateReviewQuestions(wrongWords) {
+            let newQuizList = [];
+            
+            wrongWords.forEach(wordData => {
+                const potentialQuestions = contextualQuizPool.filter(q => 
+                    q.options.some(o => o.word === wordData.word)
+                );
+
+                if (potentialQuestions.length > 0) {
+                    const sourceQuestion = potentialQuestions[Math.floor(Math.random() * potentialQuestions.length)];
+                    newQuizList.push({ ...sourceQuestion, isReview: true });
+                }
+            });
+
+            return shuffleArray(newQuizList);
+        }
+
+        // --- 主要流程控制函數 (Login, Start Quiz, End Quiz, Page Change) ---
+
+        function changePage(pageId) {
+            document.querySelectorAll('.page-area').forEach(page => {
+                page.style.display = 'none';
+            });
+            document.getElementById(pageId).style.display = 'block';
+
+            if (pageId === 'home-area') {
+                updateWrongWordCount();
+                document.getElementById('quiz-pool-count').textContent = contextualQuizPool.length;
+            }
+            if (pageId === 'my-vocab-area') {
+                displayMyVocab();
+            }
+        }
+
+        function simulateLogin() {
+            const username = document.getElementById('username').value;
+            if (username.trim() !== "") {
+                currentUsername = username;
+                // 儲存用戶名
+                localStorage.setItem('lastUsername_BIG_5K', username);
+                document.getElementById('welcome-message').textContent = `歡迎回來，${currentUsername}！`;
+                changePage('home-area');
+            } else {
+                document.getElementById('login-message').textContent = "請輸入用戶名。";
+            }
+        }
+
+        function logout() {
+            currentUsername = null;
+            changePage('login-area');
+        }
+
+        function startQuiz(reviewMode = false) {
+            if (!currentUsername) {
+                alert("請先登入。");
+                changePage('login-area');
+                return;
+            }
+            
+            isReviewMode = reviewMode;
+            questionCount = 0;
+            reviewQuestionIndex = 0;
+            
+            if (isReviewMode) {
+                const wrongWords = getLocalStorageData(WRONG_WORDS_KEY, currentUsername);
+                if (wrongWords.length === 0) {
+                    alert("您的錯題本是空的！請先進行測驗並答錯一些題目。");
+                    return;
+                }
+                reviewQuizData = generateReviewQuestions(wrongWords); 
+                if (reviewQuizData.length === 0) {
+                     alert("無法從主題庫中為您的錯題生成複習題目。");
+                    return;
+                }
+            } else {
+                // 正常測驗模式，打亂題庫
+                reviewQuizData = shuffleArray([...contextualQuizPool]);
+                if (reviewQuizData.length === 0) {
+                    alert("題庫是空的！請檢查 contextualQuizPool 變量是否已填入題目。");
+                    return;
+                }
+            }
+            
+            changePage('quiz-area');
+            loadNextQuestion();
+        }
+        
+        function endQuiz() {
+            if (isReviewMode && reviewQuizData.length > 0) {
+                alert(`本次複習結束！您複習了 ${reviewQuizData.length} 個單字。`);
+            } else if (!isReviewMode && reviewQuestionIndex > 0) {
+                 alert(`本次測驗結束！您總共完成了 ${reviewQuestionIndex} 道題目。`);
+            }
+            changePage('home-area');
+        }
+
+
+        function loadNextQuestion() {
+            document.getElementById('explanation-area').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('options-container').innerHTML = '';
+            document.getElementById('question-text').innerHTML = '';
+            document.getElementById('loading-message').style.display = 'block';
+            document.getElementById('quiz-content').style.opacity = '0.5';
+
+            if (reviewQuestionIndex >= reviewQuizData.length) {
+                // 題庫已用完
+                endQuiz();
+                return;
+            }
+            
+            currentQuestion = reviewQuizData[reviewQuestionIndex];
+            reviewQuestionIndex++;
+            questionCount++;
+
+            document.getElementById('question-number').textContent = `Question ${questionCount} of ${reviewQuizData.length} ${currentQuestion.isReview ? '(錯題複習)' : ''}`;
+            
+            const formattedQuestion = currentQuestion.question.replace('_______', ' **_______** ');
+            document.getElementById('question-text').innerHTML = formattedQuestion;
+            
+            renderOptions(currentQuestion.options);
+
+            document.getElementById('loading-message').style.display = 'none';
+            document.getElementById('quiz-content').style.opacity = '1';
+        }
+
+        function renderOptions(options) {
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            options.forEach(option => {
+                const isCollected = isWordCollected(option.word);
+                const item = document.createElement('div');
+                item.className = 'option-item';
+                item.innerHTML = `
+                    <label class="option-label">
+                        <input type="radio" name="answer" value="${option.key}" data-word="${option.word}">
+                        (${option.key}) ${option.word}
+                    </label>
+                    <span class="favorite-btn ${isCollected ? 'collected' : ''}" data-word="${option.word}" onclick="toggleFavorite(this)">
+                        ⭐
+                    </span>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function checkAnswer() {
+            const selected = document.querySelector('input[name="answer"]:checked');
+            const feedbackElement = document.getElementById('feedback');
+            const explanationArea = document.getElementById('explanation-area');
+
+            if (!selected) {
+                feedbackElement.className = 'feedback warning';
+                feedbackElement.textContent = '請選擇一個答案！';
+                return;
+            }
+
+            const isCorrect = (selected.value === currentQuestion.answerKey);
+            const correctWordData = currentQuestion.options.find(o => o.key === currentQuestion.answerKey);
+            
+            const explanationVocabData = currentQuestion.options.map(opt => 
+                uniqueVocabPool.find(v => v.word === opt.word) || opt
+            );
+
+
+            document.getElementById('submit-btn').style.display = 'none';
+            explanationArea.style.display = 'block';
+
+            if (isCorrect) {
+                feedbackElement.className = 'feedback correct';
+                feedbackElement.textContent = `✅ 正確！答案是 (${currentQuestion.answerKey}) ${correctWordData.word}`;
+                if (currentQuestion.isReview) {
+                    removeWrongWord(correctWordData);
+                }
+            } else {
+                feedbackElement.className = 'feedback incorrect';
+                feedbackElement.textContent = `❌ 錯誤！正確答案是 (${currentQuestion.answerKey}) ${correctWordData.word}`;
+                addWrongWord(correctWordData);
+            }
+            
+            displayExplanation(currentQuestion, explanationVocabData);
+            disableOptions();
+            
+            if (reviewQuestionIndex >= reviewQuizData.length) {
+                document.getElementById('next-btn').textContent = isReviewMode ? '完成複習，返回首頁' : '完成測驗，返回首頁';
+            } else {
+                document.getElementById('next-btn').textContent = '下一題';
+            }
+        }
+        
+        function disableOptions() {
+            document.querySelectorAll('input[name="answer"]').forEach(radio => {
+                radio.disabled = true;
+                const key = radio.value;
+                const optionItem = radio.closest('.option-item');
+                if (key === currentQuestion.answerKey) {
+                    optionItem.style.border = '2px solid #4caf50';
+                    optionItem.style.backgroundColor = '#e8f5e9';
+                } else if (radio.checked && key !== currentQuestion.answerKey) {
+                    optionItem.style.border = '2px solid #f44336';
+                    optionItem.style.backgroundColor = '#ffebee';
+                }
+            });
+        }
+
+
+        function displayExplanation(questionData, vocabDetails) {
+            document.getElementById('translation-text').textContent = questionData.questionTrans;
+            document.getElementById('grammar-text').textContent = questionData.questionGrammar;
+            
+            const tbody = document.getElementById('explanation-body');
+            tbody.innerHTML = '';
+            
+            vocabDetails.forEach(vocab => {
+                const isCorrect = (questionData.options.find(opt => opt.word === vocab.word)?.key === questionData.answerKey);
+                const row = tbody.insertRow();
+                if (isCorrect) {
+                    row.style.backgroundColor = '#dcedc8'; // 淺綠色標註正確答案
+                }
+                row.insertCell().textContent = vocab.word;
+                row.insertCell().textContent = vocab.part;
+                row.insertCell().textContent = vocab.trans;
+                row.insertCell().textContent = vocab.def;
+            });
+        }
+
+        function nextQuestion() {
+            if (reviewQuestionIndex > reviewQuizData.length) {
+                endQuiz();
+            } else {
+                loadNextQuestion();
+            }
+        }
+
+        // --- Local Storage 數據處理 (錯題本和收藏) ---
+
+        function getLocalStorageData(key, username) {
+            const data = localStorage.getItem(`${key}_${username}`);
+            return data ? JSON.parse(data) : [];
+        }
+
+        function setLocalStorageData(key, username, data) {
+            localStorage.setItem(`${key}_${username}`, JSON.stringify(data));
+        }
+
+        function getWordDataForStorage(word) {
+            return uniqueVocabPool.find(v => v.word === word) || { word: word, part: 'N/A', trans: 'N/A', def: 'N/A' };
+        }
+
+        function addWrongWord(wordData) {
+            const fullData = getWordDataForStorage(wordData.word);
+            const wrongWords = getLocalStorageData(WRONG_WORDS_KEY, currentUsername);
+            if (!wrongWords.some(w => w.word === fullData.word)) {
+                wrongWords.push(fullData);
+                setLocalStorageData(WRONG_WORDS_KEY, currentUsername, wrongWords);
+                updateWrongWordCount();
+            }
+        }
+
+        function removeWrongWord(wordData) {
+            let wrongWords = getLocalStorageData(WRONG_WORDS_KEY, currentUsername);
+            const initialLength = wrongWords.length;
+            
+            wrongWords = wrongWords.filter(w => w.word !== wordData.word);
+
+            if (wrongWords.length < initialLength) {
+                setLocalStorageData(WRONG_WORDS_KEY, currentUsername, wrongWords);
+                updateWrongWordCount();
+            }
+        }
+
+        function updateWrongWordCount() {
+            if (!currentUsername) return;
+            const wrongWords = getLocalStorageData(WRONG_WORDS_KEY, currentUsername);
+            document.getElementById('wrong-word-count').textContent = wrongWords.length;
+        }
+
+        function isWordCollected(word) {
+            if (!currentUsername) return false;
+            const myVocab = getLocalStorageData(MY_WORDS_KEY, currentUsername);
+            return myVocab.some(w => w.word === word);
+        }
+
+        function toggleFavorite(element) {
+            if (!currentUsername) {
+                alert("請先登入才能收藏單字。");
+                return;
+            }
+            
+            const word = element.dataset.word;
+            let myVocab = getLocalStorageData(MY_WORDS_KEY, currentUsername);
+            const index = myVocab.findIndex(w => w.word === word);
+            
+            const fullWordData = getWordDataForStorage(word);
+
+            if (index > -1) {
+                myVocab.splice(index, 1);
+                element.classList.remove('collected');
+                alert(`已將單字 ${word} 從收藏中移除。`);
+            } else if (fullWordData) {
+                myVocab.push(fullWordData);
+                element.classList.add('collected');
+                alert(`已將單字 ${word} 加入收藏！`);
+            }
+
+            setLocalStorageData(MY_WORDS_KEY, currentUsername, myVocab);
+            
+            document.querySelectorAll(`.favorite-btn[data-word="${word}"]`).forEach(btn => {
+                if (index > -1) {
+                    btn.classList.remove('collected');
+                } else {
+                    btn.classList.add('collected');
+                }
+            });
+        }
+
+        function displayMyVocab() {
+            if (!currentUsername) return;
+            const myVocab = getLocalStorageData(MY_WORDS_KEY, currentUsername);
+            const tbody = document.getElementById('my-vocab-body');
+            tbody.innerHTML = '';
+            
+            document.getElementById('my-vocab-count').textContent = `(${myVocab.length} 個)`;
+
+            myVocab.forEach(word => {
+                const row = tbody.insertRow();
+                row.insertCell().textContent = word.word;
+                row.insertCell().textContent = word.part;
+                row.insertCell().textContent = word.trans;
+                row.insertCell().textContent = word.def;
+            });
+        }
+        
+        function clearMyVocab() {
+            if (!confirm("確定要清除所有收藏單字嗎？此操作不可逆。")) {
+                return;
+            }
+            setLocalStorageData(MY_WORDS_KEY, currentUsername, []);
+            displayMyVocab();
+            alert("所有收藏單字已清除。");
+        }
+
+        // --- 初始化 ---
+        window.onload = function() {
+            document.getElementById('quiz-pool-count').textContent = contextualQuizPool.length;
+            
+            changePage('login-area');
+            const storedUsername = localStorage.getItem('lastUsername_BIG_5K');
+            if (storedUsername) {
+                document.getElementById('username').value = storedUsername;
+                currentUsername = storedUsername; 
+                updateWrongWordCount();
+                currentUsername = null; 
+            }
+        };
+
+    </script>
+</body>
+</html>
